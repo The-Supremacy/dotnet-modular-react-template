@@ -7,8 +7,10 @@ The template's current local platform uses Aspire and includes:
 - Keycloak for local OpenID Connect authentication.
 - Migrator for applying Host-owned migrations.
 - Host API.
+- Admin Vite app.
+- Web Vite app.
 
-Mailpit and frontend Vite apps remain deferred until their feature gates.
+Mailpit remains deferred until mail workflows exist.
 
 ## Startup
 
@@ -31,6 +33,11 @@ authority.
 The Redis resource is referenced by the Host as
 `ConnectionStrings:session-tickets`. The PostgreSQL database resource is
 referenced as `ConnectionStrings:modular-template-host`.
+
+The admin and web Vite app resources receive `VITE_HOST_ORIGIN` from the local
+Host HTTP endpoint. Their Vite development servers continue to proxy `/api/`
+and `/auth/` routes to the Host rather than calling identity-provider endpoints
+directly from browser code.
 
 ## Reset Behavior
 

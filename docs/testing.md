@@ -10,4 +10,10 @@ Area details:
 - [E2E testing](testing/e2e.md)
 - [Eval testing](testing/eval.md)
 
-No test projects exist yet.
+Current validation entrypoints:
+
+- `dotnet test ModularTemplate.slnx`
+- `pnpm frontend:typecheck`
+- `pnpm frontend:test`
+- `pnpm frontend:build`
+- `pnpm frontend:lint`

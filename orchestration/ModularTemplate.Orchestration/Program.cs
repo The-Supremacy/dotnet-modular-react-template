@@ -11,7 +11,7 @@ var migrator = builder.AddProject<Projects.ModularTemplate_Migrator>("migrator")
     .WithReference(database)
     .WaitFor(database);
 
-builder.AddProject<Projects.ModularTemplate_Host>("host")
+var host = builder.AddProject<Projects.ModularTemplate_Host>("host")
     .WithExternalHttpEndpoints()
     .WithReference(database)
     .WithReference(sessionTickets)
@@ -24,5 +24,17 @@ builder.AddProject<Projects.ModularTemplate_Host>("host")
     .WaitFor(sessionTickets)
     .WaitFor(keycloak)
     .WaitForCompletion(migrator);
+
+builder.AddViteApp("admin", "../../web/apps/admin")
+    .WithPnpm()
+    .WithReference(host)
+    .WithEnvironment("VITE_HOST_ORIGIN", host.GetEndpoint("http"))
+    .WaitFor(host);
+
+builder.AddViteApp("web", "../../web/apps/web")
+    .WithPnpm()
+    .WithReference(host)
+    .WithEnvironment("VITE_HOST_ORIGIN", host.GetEndpoint("http"))
+    .WaitFor(host);
 
 builder.Build().Run();
