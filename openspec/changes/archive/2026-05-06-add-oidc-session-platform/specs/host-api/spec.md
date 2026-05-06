@@ -1,10 +1,4 @@
-# host-api Specification
-
-## Purpose
-
-Defines accepted Host API behavior for current-user and authentication/authorization response semantics.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Current User Endpoint
 
@@ -62,13 +56,3 @@ API behavior that requires application access MUST return `403 Forbidden` for au
 - **WHEN** a browser with a valid application session cookie but no active application access requests API behavior requiring application access
 - **THEN** the response is `403 Forbidden`
 - **AND** the response does not redirect to an access-denied page
-
-### Requirement: Current User Response Shape
-
-Successful current-user responses MUST include `isAuthenticated`, local `user` details, and `applicationAccess.hasAccess`, and MUST avoid raw provider tokens, provider authorization payloads, product-specific roles, and broad provisioning semantics.
-
-#### Scenario: Current-user response is serialized
-
-- **WHEN** `GET /api/me` returns a successful response
-- **THEN** the response contains only client-safe local user details and neutral
-  application access state

@@ -44,11 +44,13 @@ migrations, tests, or template automation.
 
 ## Last Verification Commands
 
-These passed after Gate 6:
+These passed after Gate 8:
 
 ```sh
 dotnet restore ModularTemplate.slnx
 dotnet build ModularTemplate.slnx --no-restore
+dotnet test server/tests/ModularTemplate.Host.Tests/ModularTemplate.Host.Tests.csproj --no-build
+openspec validate add-oidc-session-platform --strict
 pnpm format:check
 ```
 
@@ -178,11 +180,33 @@ Current standing:
 - Future changes should modify the current OpenSpec capability specs rather
   than historical feature artifacts.
 
+### Gate 8: Local OIDC Session Platform
+
+Implemented under OpenSpec change `add-oidc-session-platform`.
+
+Includes:
+
+- Host-owned cookie and OpenID Connect authentication composition.
+- API redirect suppression for unauthenticated and forbidden API requests.
+- Minimal Host-owned Redis-backed authentication ticket store.
+- Browser login and logout Host routes.
+- Provider-neutral claim mapping for OIDC `sub`, `iss`, `name`, and `email`
+  claims.
+- Aspire app host with PostgreSQL, Redis, Keycloak, Migrator, and Host
+  resources.
+- Checked-in Keycloak realm import for the local `modular-template` realm and
+  `modular-template-host` client.
+
+Gate 8 intentionally does not include frontend apps, OpenAPI client generation,
+identity-provider Admin API provisioning, generated EF migrations, Mailpit,
+persistent local data volumes, durable messaging, outbox/Rebus, CI workflows,
+or template automation.
+
 ## Next Intended Step
 
-Use OpenSpec for the next substantial behavior or platform slice. Start by
-reading `docs/governance.md`, stable architecture/platform/testing docs, and
-the current specs under `openspec/specs/`.
+Archive `add-oidc-session-platform` after review so accepted auth/session,
+host-api, and local OIDC platform behavior is merged into `openspec/specs/`.
+Use OpenSpec for the next substantial behavior or platform slice.
 
 ## Fresh Agent Handoff
 

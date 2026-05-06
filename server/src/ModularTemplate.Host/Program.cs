@@ -1,5 +1,6 @@
 using ModularTemplate.Host.Configuration;
 using ModularTemplate.Host.Authorization;
+using ModularTemplate.Host.Features.Auth;
 using ModularTemplate.Host.Features.CurrentUser;
 using ModularTemplate.Identity;
 using ModularTemplate.Identity.Infrastructure;
@@ -20,6 +21,7 @@ app.UseProblemDetails();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapDefaultEndpoints();
+app.MapAuthEndpoints();
 app.MapCurrentUserEndpoint();
 
 app.Run();

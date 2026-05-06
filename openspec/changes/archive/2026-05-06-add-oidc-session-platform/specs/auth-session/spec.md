@@ -1,12 +1,4 @@
-# auth-session Specification
-
-## Purpose
-
-Defines the accepted backend authentication/session boundaries for API behavior
-in the template, including production browser session mechanics and temporary
-test-only verification scaffolding.
-
-## Requirements
+## ADDED Requirements
 
 ### Requirement: Production Authentication Composition
 
@@ -27,6 +19,8 @@ The Host MUST store browser authentication ticket state server-side and MUST NOT
 - **WHEN** browser code calls same-origin API endpoints after login
 - **THEN** authentication is based on the application session cookie
 - **AND** browser code does not read, store, or send provider access or refresh tokens directly
+
+## MODIFIED Requirements
 
 ### Requirement: API Authentication Failures
 

@@ -1,4 +1,5 @@
 .agents/
+.codex/skills/
 .specify/extensions/
 .specify/templates/
 .specify/workflows/
