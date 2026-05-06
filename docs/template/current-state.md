@@ -16,10 +16,7 @@ Includes:
 - Root README and AGENTS index.
 - Stable documentation indexes under `docs/`.
 - Top-level skeleton folders for `server`, `web`, `orchestration`, `deploy`,
-  `scripts`, and the former `openspec` placeholder.
-
-Note: `openspec/` was created as a Gate 1 placeholder before the SDD-tooling
-pivot. The accepted direction is now Spec Kit with Codex, Archive, and Refine.
+  and `scripts`.
 
 ### Gate 2: Solution And Repository Infrastructure
 
@@ -70,19 +67,17 @@ devcontainer feature rather than a post-create script.
 
 This was a tooling checkpoint, not Gate 3.
 
-## Spec Kit Tooling Step
+## OpenSpec Tooling Step
 
-Completed after the devcontainer checkpoint.
+Completed after the first accepted behavior slice.
 
 Includes:
 
-- `scripts/setup-speckit.sh`.
-- `.specify/` initialized with Spec Kit `0.8.5`.
-- Codex integration under `.agents/skills`.
-- Archive extension pinned to `stn1slv/spec-kit-archive` `v1.0.0`.
-- Refine extension pinned to `Quratulain-bilal/spec-kit-refine` `v1.0.0`.
-- Initial `.specify/memory/constitution.md`.
-- Removal of the obsolete `openspec/` placeholder.
+- `scripts/setup-openspec.sh`.
+- `openspec/` initialized with OpenSpec `1.3.1`.
+- Codex OpenSpec skills under `.codex/skills`.
+- Durable governance moved to `docs/governance.md`.
+- Accepted current behavior represented under `openspec/specs/`.
 
 This was an SDD tooling checkpoint, not Gate 3.
 
@@ -160,11 +155,16 @@ topology, or frontend integration.
 
 ### Gate 7: Auth/Session And Current User Slice
 
-In review.
+Accepted into OpenSpec current specs.
 
 Current standing:
 
-- The slice is governed by `specs/001-auth-session-current-user/`.
+- Behavioral current specs are `openspec/specs/auth-session/spec.md`,
+  `openspec/specs/identity-current-user/spec.md`, and
+  `openspec/specs/host-api/spec.md`.
+- Technical migration, governance, persistence-scope, and verification-only
+  details remain in stable docs or the archived OpenSpec migration change, not
+  as active behavior capabilities.
 - Custom request-header authentication is temporary backend verification
   scaffolding. It should be removed when real Host auth/session mechanics are
   introduced and must not become production authentication or response state.
@@ -175,34 +175,23 @@ Current standing:
 - The direct `IIdentityStore` abstraction is transitional. It can remain until
   DDD/CQRS persistence conventions are documented and implemented, but it should
   be replaced or reshaped into the durable repository/query-handler pattern.
-- Plan and task artifacts may be stale after refinement; propagate the latest
-  spec before continuing implementation changes.
+- Future changes should modify the current OpenSpec capability specs rather
+  than historical feature artifacts.
 
 ## Next Intended Step
 
-Review Gate 6 persistence foundation before proceeding to behavior work.
-
-Recommended next gate: initial auth/session and current-user behavior slice.
-
-Expected preparation:
-
-- Use Spec Kit for the first behavior slice before code changes.
-- Start from the backend auth/session context, Identity current-user context,
-  and initial `/api/me` behavior.
-- Keep application authorization and initial admin bootstrap explicit in the
-  spec if they are included in the slice.
-- Do not add generated migrations, frontend apps, Aspire resources, outbox/Rebus,
-  or broad admin provisioning workflows as part of the first behavior slice.
-
-Spec Kit note: this is the first upcoming scope that should use Spec Kit. Start
-with `speckit-specify`, then plan and task artifacts before implementation.
+Use OpenSpec for the next substantial behavior or platform slice. Start by
+reading `docs/governance.md`, stable architecture/platform/testing docs, and
+the current specs under `openspec/specs/`.
 
 ## Fresh Agent Handoff
 
 Start with this file, then read:
 
 - `AGENTS.md`.
-- `.specify/memory/constitution.md`.
+- `docs/governance.md`.
+- `docs/openspec.md`.
+- `openspec/specs/`.
 - `docs/architecture/server.md`.
 - `docs/template/template-decisions.md`.
 - `docs/template/implementation-plan.md` for historical planning context only.
@@ -218,9 +207,7 @@ foundation until it is reviewed and committed.
 
 - `.github/skills/aspire/SKILL.md` is an Aspire-installed skill artifact. It was
   not part of Gate 1 or Gate 2 template scaffolding.
-- Spec Kit should not be installed automatically by devcontainer rebuilds.
-- The initial constitution governs this template repository. Decide during the
+- OpenSpec should not be installed automatically by devcontainer rebuilds.
+- `docs/governance.md` governs this template repository. Decide during the
   product-bootstrap work whether generated repositories inherit it unchanged or
-  receive a product-specific bootstrap constitution.
-- The first behavior gate should use Spec Kit rather than proceeding directly
-  from planning notes.
+  receive a product-specific bootstrap governance document.

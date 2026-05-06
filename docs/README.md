@@ -10,6 +10,7 @@ documentation and may be removed or rewritten by future scaffold/rename flows.
 ## Index
 
 - [architecture.md](architecture.md) summarizes the intended system shape.
+- [governance.md](governance.md) records hard project rules.
 - [architecture/server.md](architecture/server.md) records backend architecture
   guidance.
 - [architecture/web.md](architecture/web.md) records frontend architecture
@@ -19,4 +20,4 @@ documentation and may be removed or rewritten by future scaffold/rename flows.
 - [modules/README.md](modules/README.md) indexes module documentation.
 - [platform/README.md](platform/README.md) indexes platform concerns.
 - [testing.md](testing.md) summarizes the testing strategy.
-- [speckit.md](speckit.md) describes how this repository uses Spec Kit.
+- [openspec.md](openspec.md) describes how this repository uses OpenSpec.

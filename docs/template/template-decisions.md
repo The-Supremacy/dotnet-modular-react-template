@@ -138,6 +138,8 @@ Reason: the previous broad implementation style produced too many files too quic
 Use Spec Kit rather than OpenSpec as the template's default spec-driven
 development tool.
 
+Status: Superseded by "Use OpenSpec For SDD".
+
 Initial approved stack:
 
 - Spec Kit core.
@@ -161,6 +163,25 @@ Guardrails:
 - Pin Spec Kit and extension versions before committing generated setup files.
 - Treat community extension catalog inclusion as discoverability, not audit or
   endorsement.
+
+### Use OpenSpec For SDD
+
+Use OpenSpec as the template's default spec-driven development tool.
+
+Reason: OpenSpec's current-state model fits this template better after the
+first accepted behavior slice. Accepted behavior should live in
+capability-oriented specs under `openspec/specs/`, while active changes live as
+deltas under `openspec/changes/`. This fit is more important for the template
+than Spec Kit's stronger generated greenfield workflow.
+
+Guardrails:
+
+- Keep durable architecture and governance decisions in repository docs.
+- Use OpenSpec for substantial runtime behavior and cross-artifact planning.
+- Archive accepted changes so future work modifies current capability specs
+  instead of treating historical feature folders as the source of truth.
+- Do not install OpenSpec automatically from the devcontainer lifecycle.
+- Pin the OpenSpec CLI version before committing generated setup files.
 
 ## Pending Decisions
 
