@@ -17,6 +17,18 @@
   the iteration process.
 -->
 
+Before filling this section, load repository context from:
+
+- `.specify/memory/constitution.md`
+- `docs/architecture.md`
+- Relevant `docs/architecture/*.md`
+- Relevant `docs/platform/*.md`
+- `docs/testing.md` and relevant `docs/testing/*.md` when verification is in scope
+
+Do not duplicate long architecture guidance in this plan. Reference the
+canonical docs and record only feature-specific decisions, deviations, and
+verification choices.
+
 **Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
 **Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
@@ -29,9 +41,9 @@
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*CHECK: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+[Checks determined based on constitution file]
 
 ## Project Structure
 

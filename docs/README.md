@@ -19,3 +19,4 @@ documentation and may be removed or rewritten by future scaffold/rename flows.
 - [modules/README.md](modules/README.md) indexes module documentation.
 - [platform/README.md](platform/README.md) indexes platform concerns.
 - [testing.md](testing.md) summarizes the testing strategy.
+- [speckit.md](speckit.md) describes how this repository uses Spec Kit.

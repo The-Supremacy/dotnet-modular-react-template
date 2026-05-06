@@ -12,5 +12,4 @@ Expected local resources include:
 - Mailpit
 - Vite frontend apps
 
-Orchestration lives under the top-level `orchestration/` folder. Gate 2 includes
-an empty project shell only; Aspire resources come in a later gate.
+Orchestration lives under the top-level `orchestration/` folder.

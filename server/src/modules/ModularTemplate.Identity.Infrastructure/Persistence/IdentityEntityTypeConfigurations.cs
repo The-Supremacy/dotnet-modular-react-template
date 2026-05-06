@@ -1,0 +1,33 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ModularTemplate.Identity.Access;
+using ModularTemplate.Identity.Users;
+
+namespace ModularTemplate.Identity.Infrastructure.Persistence;
+
+public sealed class LocalUserConfiguration : IEntityTypeConfiguration<LocalUser>
+{
+    public void Configure(EntityTypeBuilder<LocalUser> builder)
+    {
+        builder.ToTable("local_users", "identity");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Provider).HasMaxLength(128).IsRequired();
+        builder.Property(x => x.Subject).HasMaxLength(256).IsRequired();
+        builder.Property(x => x.DisplayName).HasMaxLength(256);
+        builder.Property(x => x.Email).HasMaxLength(320);
+        builder.HasIndex(x => new { x.Provider, x.Subject }).IsUnique();
+    }
+}
+
+public sealed class ApplicationAccessRecordConfiguration
+    : IEntityTypeConfiguration<ApplicationAccessRecord>
+{
+    public void Configure(EntityTypeBuilder<ApplicationAccessRecord> builder)
+    {
+        builder.ToTable("application_access_records", "identity");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.LocalUserId).IsRequired();
+        builder.Property(x => x.IsActive).IsRequired();
+        builder.HasIndex(x => x.LocalUserId).IsUnique();
+    }
+}

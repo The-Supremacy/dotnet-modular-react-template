@@ -9,21 +9,17 @@ Start with:
 - [docs/template/README.md](docs/template/README.md) for template-building
   planning context.
 
-Current implementation gate: review Gate 5 Host foundation before persistence
-foundation.
-
-Do not add domain behavior, persistence, auth/session plumbing, generated
-migrations, frontend apps, orchestration resources, CI workflows, or template
-automation until the relevant gate is reviewed.
-
-For a fresh handoff, treat `docs/template/current-state.md` as the source of
-truth for completed gates, verification commands, and next scope.
+Do not add domain behavior, auth/session plumbing, generated migrations,
+frontend apps, orchestration resources, CI workflows, or template automation
+until accepted feature artifacts or durable architecture decisions state the
+scope.
 
 <!-- SPECKIT START -->
 
 Spec Kit is initialized with Codex skills under `.agents/skills`.
-Use `.specify/memory/constitution.md` for hard project rules and
-`docs/template/current-state.md` for the current gate before running Spec Kit
-skills.
+Use `.specify/memory/constitution.md` for hard project rules before running
+Spec Kit skills.
+Archived feature memory is maintained under `.specify/memory/`.
+Most recent archived feature: `specs/001-auth-session-current-user`.
 
 <!-- SPECKIT END -->

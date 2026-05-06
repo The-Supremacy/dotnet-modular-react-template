@@ -1,9 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <ProjectReference Include="..\ModularTemplate.Persistence\ModularTemplate.Persistence.csproj" />
     <ProjectReference Include="..\ModularTemplate.ServiceDefaults\ModularTemplate.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

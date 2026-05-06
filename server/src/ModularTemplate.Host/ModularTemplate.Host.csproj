@@ -1,5 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <ItemGroup>
+    <ProjectReference Include="..\ModularTemplate.Persistence\ModularTemplate.Persistence.csproj" />
     <ProjectReference Include="..\ModularTemplate.ServiceDefaults\ModularTemplate.ServiceDefaults.csproj" />
     <ProjectReference Include="..\ModularTemplate.SharedKernel\ModularTemplate.SharedKernel.csproj" />
     <ProjectReference Include="..\modules\ModularTemplate.Identity\ModularTemplate.Identity.csproj" />

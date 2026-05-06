@@ -47,9 +47,10 @@ migrations, tests, or template automation.
 
 ## Last Verification Commands
 
-These passed after Gate 5:
+These passed after Gate 6:
 
 ```sh
+dotnet restore ModularTemplate.slnx
 dotnet build ModularTemplate.slnx --no-restore
 pnpm format:check
 ```
@@ -131,25 +132,70 @@ Gate 5 intentionally does not include feature endpoints, OpenAPI generation,
 auth/session plumbing, persistence, module registration behavior, or frontend
 integration.
 
+### Gate 6: Persistence Foundation
+
+Completed.
+
+Includes:
+
+- `ModularTemplate.Persistence` Host-owned composition project.
+- Concrete EF Core `ModularTemplateDbContext` shell.
+- Empty `IIdentityDbContext` module persistence interface to establish the
+  narrow module DbContext pattern.
+- Shared PostgreSQL persistence registration through `AddPersistence`.
+- DI registration that resolves `IIdentityDbContext` to the shared concrete
+  DbContext.
+- Development connection string key `ConnectionStrings:modular-template-host`
+  for the Host-owned database.
+- Host calls to `AddPersistence`.
+- Migrator wiring that resolves `ModularTemplateDbContext` and calls
+  `Database.MigrateAsync`.
+- Central package versions for EF Core, EF Core Relational, EF Core Design,
+  Npgsql, and required Microsoft.Extensions abstractions.
+
+Gate 6 intentionally does not include entities, EF mappings, generated
+migrations, domain-event persistence, transaction pipeline behavior, module
+stores, auth/session plumbing, API endpoints, outbox/Rebus, Aspire resource
+topology, or frontend integration.
+
+### Gate 7: Auth/Session And Current User Slice
+
+In review.
+
+Current standing:
+
+- The slice is governed by `specs/001-auth-session-current-user/`.
+- Custom request-header authentication is temporary backend verification
+  scaffolding. It should be removed when real Host auth/session mechanics are
+  introduced and must not become production authentication or response state.
+- Current-user behavior should split Host claim parsing from Identity
+  local-user/application-access resolution. Host should produce a
+  provider-neutral authenticated identity value; Identity should resolve
+  current-user state from that value.
+- The direct `IIdentityStore` abstraction is transitional. It can remain until
+  DDD/CQRS persistence conventions are documented and implemented, but it should
+  be replaced or reshaped into the durable repository/query-handler pattern.
+- Plan and task artifacts may be stale after refinement; propagate the latest
+  spec before continuing implementation changes.
+
 ## Next Intended Step
 
-Review Gate 5 Host foundation before proceeding to persistence foundation.
+Review Gate 6 persistence foundation before proceeding to behavior work.
 
-Recommended next gate: persistence foundation.
+Recommended next gate: initial auth/session and current-user behavior slice.
 
-Expected scope:
+Expected preparation:
 
-- Shared Host-owned EF Core DbContext shell.
-- Narrow module DbContext interface pattern, starting with an empty Identity
-  persistence surface if needed for composition.
-- Migrator wiring that can later apply Host-owned migrations.
-- No generated migrations yet.
-- No domain behavior, Identity behavior, auth/session plumbing, API endpoints,
-  outbox/Rebus, Aspire resource topology, or frontend work.
+- Use Spec Kit for the first behavior slice before code changes.
+- Start from the backend auth/session context, Identity current-user context,
+  and initial `/api/me` behavior.
+- Keep application authorization and initial admin bootstrap explicit in the
+  spec if they are included in the slice.
+- Do not add generated migrations, frontend apps, Aspire resources, outbox/Rebus,
+  or broad admin provisioning workflows as part of the first behavior slice.
 
-Spec Kit note: the next persistence-only gate can remain documentation/code
-driven. The first upcoming gate that should use Spec Kit is the initial
-auth/session and `/api/me` behavior slice.
+Spec Kit note: this is the first upcoming scope that should use Spec Kit. Start
+with `speckit-specify`, then plan and task artifacts before implementation.
 
 ## Fresh Agent Handoff
 
@@ -165,8 +211,8 @@ Treat this file as the current gate source of truth when it differs from older
 planning notes.
 
 Before editing, inspect the dirty worktree and do not revert existing changes.
-The current uncommitted change set includes the completed devcontainer, Spec
-Kit, Gate 3, Gate 4, and Gate 5 work.
+The current uncommitted change set may include the completed Gate 6 persistence
+foundation until it is reviewed and committed.
 
 ## Notes
 
@@ -176,5 +222,5 @@ Kit, Gate 3, Gate 4, and Gate 5 work.
 - The initial constitution governs this template repository. Decide during the
   product-bootstrap work whether generated repositories inherit it unchanged or
   receive a product-specific bootstrap constitution.
-- Current worktree changes include prior Gate 1/Gate 2 work plus devcontainer,
-  Spec Kit, SharedKernel, ServiceDefaults, and Host foundation updates.
+- The first behavior gate should use Spec Kit rather than proceeding directly
+  from planning notes.
