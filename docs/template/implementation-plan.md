@@ -28,6 +28,8 @@ Implemented and accepted:
   admin frontend, and web frontend.
 - Admin and web React/Vite app shells with shared browser-safe auth helpers,
   access-state routing, and local proxying for `/api/` and `/auth/`.
+- Host OpenAPI generation and generated `web/packages/api-client` package
+  consumed by frontend auth helpers.
 
 Still deferred:
 
@@ -432,18 +434,19 @@ Frontend rules:
 
 Aspire is the local entrypoint.
 
-Initial resources:
+Implemented local resources:
 
 - Host API.
 - Migrator.
 - PostgreSQL.
 - Redis for BFF session ticket storage.
 - Keycloak.
-- Mailpit.
-- Vite frontend app(s).
+- Admin Vite frontend app.
+- Web Vite frontend app.
 
 Potential later resources:
 
+- Mailpit once a mail workflow exists.
 - pgvector in PostgreSQL for semantic retrieval.
 - Ollama for local LLM behavior.
 - Qdrant only if a specific vector-store comparison is useful.
@@ -457,7 +460,9 @@ Document Ollama and local AI resources now, but do not wire them into the first 
 
 ## Devcontainer Strategy
 
-The template should preserve the current devcontainer shape before archived context is removed. See [devcontainer-baseline.md](devcontainer-baseline.md).
+The template should preserve the current devcontainer shape before archived
+context is removed. See the checked-in devcontainer notes at
+`../../.devcontainer/README.md`.
 
 Recommendation: include a `.devcontainer` by default, but keep local non-container development fully supported. A ready dev environment is excellent for onboarding and agent repeatability; the risk is that rebuilding a container can lose AI-agent history or tool-local state if that state lives inside the container filesystem.
 
@@ -534,14 +539,19 @@ The bootstrap and rename path should be treated like product code. If the templa
 
 ## Automation Baseline
 
-Initial automation:
+Implemented automation:
 
 - `Directory.Build.props` for shared .NET compiler/project policy.
 - `Directory.Packages.props` for central NuGet package versions.
 - Root `package.json` and pnpm workspace scripts for repo-level validation.
 - Husky + commitlint for semantic commits.
 - Prettier for consistent docs/frontend formatting.
-- GitHub Actions CI for formatting, backend restore/build/test, frontend lint/build/test.
+- Generated-client generation and freshness-check scripts.
+
+Deferred automation:
+
+- GitHub Actions CI for formatting, backend restore/build/test, frontend
+  lint/build/test, and generated-client freshness checks.
 - Dependabot for GitHub Actions, devcontainer, npm, and NuGet updates.
 - Release Please with config and manifest files.
 
@@ -621,6 +631,7 @@ Implemented OpenSpec baseline:
 - `openspec/specs/identity-current-user/spec.md`.
 - `openspec/specs/local-oidc-session-platform/spec.md`.
 - `openspec/specs/web-app-foundation/spec.md`.
+- `openspec/specs/generated-api-clients/spec.md`.
 
 Rules:
 
@@ -719,10 +730,9 @@ Record these in `docs/template/template-decisions.md`, not as ADRs inherited by 
 
 1. Should the domain event log table stay `event_log.domain_events`, or do we want a more explicit name such as `event_log.recorded_domain_events`?
 2. Should the first delivery include identity-provider Admin API integration, or only bootstrap one app-owned admin and leave provisioning for the first admin-portal feature?
-3. Which OpenAPI generator should be the default for the frontend package?
-4. Should `.devcontainer` be included by default despite AI-agent history/state concerns?
-5. What exact files and resource names should rename automation modify in the first version?
-6. What should the first template-change packet schema include?
+3. What exact files and resource names should rename automation modify in the
+   first version?
+4. What should the first template-change packet schema include?
 
 ## Current Working Recommendations
 

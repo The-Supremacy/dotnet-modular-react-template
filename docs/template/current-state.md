@@ -221,7 +221,13 @@ Includes:
 
 ### Gate 11: Generated API Clients
 
-Implemented under active OpenSpec change `add-generated-api-clients`.
+Implemented and archived under OpenSpec change
+`2026-05-07-add-generated-api-clients`.
+
+Current specs:
+
+- `openspec/specs/generated-api-clients/spec.md`.
+- `openspec/specs/web-app-foundation/spec.md`.
 
 Includes:
 
@@ -240,6 +246,7 @@ Includes:
 The following remain intentionally absent until accepted OpenSpec artifacts or
 durable architecture decisions define their scope:
 
+- OIDC/browser-session smoke UI in both frontend apps.
 - Shared UI package conventions beyond the current frontend foundation.
 - Generated TanStack Query helpers from Hey API.
 - CI workflow definition.
@@ -257,7 +264,7 @@ durable architecture decisions define their scope:
 
 ## Last Verification Commands
 
-These passed after this documentation reconciliation:
+These were recorded as passing after the generated-client gate reconciliation:
 
 ```sh
 dotnet test ModularTemplate.slnx

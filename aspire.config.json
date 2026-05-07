@@ -1,0 +1,5 @@
+{
+    "appHost": {
+        "path": "orchestration/ModularTemplate.Orchestration/ModularTemplate.Orchestration.csproj"
+    }
+}

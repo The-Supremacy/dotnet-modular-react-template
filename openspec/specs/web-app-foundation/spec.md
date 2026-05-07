@@ -27,13 +27,15 @@ portal and the neutral user-facing portal.
 ### Requirement: Browser Session Helpers
 
 The frontend MUST use shared browser auth helpers that call the Host through
-same-origin BFF routes and MUST NOT store identity-provider tokens in browser
-code.
+same-origin BFF routes, MUST use the generated API client package for
+Host-owned API calls where generated operations exist, and MUST NOT store
+identity-provider tokens in browser code.
 
 #### Scenario: Current user is loaded
 
 - **WHEN** a browser app needs current-user state
-- **THEN** it requests `GET /api/me` through a same-origin relative URL
+- **THEN** it requests `GET /api/me` through the generated API client package
+- **AND** the generated client uses the same browser origin for the API route
 - **AND** it treats the response as the source of authenticated user and
   application-access state
 
