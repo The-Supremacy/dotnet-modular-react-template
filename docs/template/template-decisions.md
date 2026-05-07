@@ -40,24 +40,36 @@ still belongs in `openspec/specs/`.
 - Defer durable intermodule messaging and outbox processing until a concrete
   workflow needs them.
 - Defer Mailpit until a mail workflow exists.
-- Defer CI workflows, Dependabot, Release Please, and template
-  rename/bootstrap automation until their own accepted scopes exist.
+- Use a default GitHub Actions verification workflow for pull requests and
+  pushes to `main`.
+- Provide out-of-place template rename/bootstrap automation that accepts one
+  product name and output path, derives all first-version naming forms, and
+  verifies a temporary generated repository.
+- Defer Dependabot, Release Please, and template rename/bootstrap automation
+  extensions until their own accepted scopes exist.
 - Include a small browser-session smoke surface in both frontend apps after
   generated clients exist, so the template exercises login, current-user, and
   logout through the real Host OIDC session path.
+- Treat product creation as copy plus explicit rename/bootstrap automation
+  until a later change proves the template needs a fuller generator.
+- Keep `docs/template/` as template-repository planning context. Future
+  bootstrap automation should either exclude this folder from generated
+  products or rewrite it explicitly for product-owned planning.
 
 ## Current Open Questions
 
-- When should full local-platform browser automation graduate into default or
-  CI validation?
+- When should full local-platform browser automation graduate into default CI
+  validation?
 - When additional Host API operations exist, should Hey API generated TanStack
   Query helpers be imported directly by apps, or wrapped by shared frontend
   packages?
 - If a future local API reference UI is added, should it use the existing BFF
   cookie session, a separate OIDC client, or remain unauthenticated
   documentation only?
-- What exact paths, package names, service names, realm/client names, and docs
-  should rename automation modify?
 - Should generated product repositories inherit `docs/governance.md` unchanged
   or receive product-specific bootstrap governance?
+- When should rename/bootstrap automation support explicit
+  namespace/package/resource slug overrides?
+- Should rename verification become part of default CI or stay a local/template
+  maintenance check?
 - What should the first template-change export/import packet schema include?

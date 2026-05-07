@@ -43,8 +43,8 @@ and the `/api/` route space. It must not be configured with identity-provider
 origins, provider access tokens, refresh tokens, or provider authorization
 payloads.
 
-The local pre-commit hook runs `pnpm api-client:check`. Future CI workflows
-should run the same command so OpenAPI/client drift is caught before merge.
+The local pre-commit hook and default CI workflow run `pnpm api-client:check`
+so OpenAPI/client drift is caught before merge.
 
 Hey API also supports TanStack Query generation. For MVP 1, the template
 generates SDK/types only and keeps app-facing query composition in

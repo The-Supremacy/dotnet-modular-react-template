@@ -11,7 +11,9 @@
     "frontend:build": "pnpm --filter './web/apps/*' build",
     "frontend:lint": "eslint web --max-warnings 0",
     "frontend:test": "pnpm --filter './web/apps/*' --filter './web/packages/*' test",
-    "frontend:typecheck": "pnpm --filter './web/apps/*' --filter './web/packages/*' typecheck"
+    "frontend:typecheck": "pnpm --filter './web/apps/*' --filter './web/packages/*' typecheck",
+    "template:bootstrap": "node scripts/bootstrap-template.mjs",
+    "template:verify": "node scripts/verify-bootstrap.mjs"
   },
   "devDependencies": {
     "@commitlint/cli": "20.5.3",
