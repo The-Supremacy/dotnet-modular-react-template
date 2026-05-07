@@ -1,7 +1,7 @@
+using NSubstitute;
 using ModularTemplate.Identity.Access;
 using ModularTemplate.Identity.Authorization;
 using ModularTemplate.Identity.Contracts.CurrentUser;
-using ModularTemplate.Identity.CurrentUser;
 using ModularTemplate.Identity.Tests.Support;
 using Shouldly;
 
@@ -11,17 +11,12 @@ public sealed class ApplicationAccessAuthorizerTests
 {
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HasApplicationAccessAsync_returns_true_for_active_application_access_record()
+    public async Task HasApplicationAccessAsync_WhenAccessIsActive_ReturnsTrue()
     {
-        var store = new InMemoryIdentityStore();
-        var provider = new CurrentUserProvider(store);
+        var provider = Substitute.For<ICurrentUserProvider>();
         var identity = new AuthenticatedIdentity("oidc", "subject-1", null, null);
-        var currentUser = await provider.GetCurrentUserAsync(
-            identity,
-            CancellationToken.None);
-        await store.UpsertApplicationAccessAsync(
-            new ApplicationAccessRecord(Guid.NewGuid(), currentUser.LocalUserId!.Value),
-            CancellationToken.None);
+        provider.GetCurrentUserAsync(identity, CancellationToken.None)
+            .Returns(new CurrentUserContext(true, Guid.NewGuid(), null, null, true));
         var authorizer = new ApplicationAccessAuthorizer(provider);
 
         bool hasAccess = await authorizer.HasApplicationAccessAsync(
@@ -33,13 +28,16 @@ public sealed class ApplicationAccessAuthorizerTests
 
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task HasApplicationAccessAsync_returns_false_without_application_access_record()
+    public async Task HasApplicationAccessAsync_WhenAccessIsMissing_ReturnsFalse()
     {
-        var provider = new CurrentUserProvider(new InMemoryIdentityStore());
+        var provider = Substitute.For<ICurrentUserProvider>();
+        var identity = new AuthenticatedIdentity("oidc", "subject-1", null, null);
+        provider.GetCurrentUserAsync(identity, CancellationToken.None)
+            .Returns(new CurrentUserContext(true, Guid.NewGuid(), null, null, false));
         var authorizer = new ApplicationAccessAuthorizer(provider);
 
         bool hasAccess = await authorizer.HasApplicationAccessAsync(
-            new AuthenticatedIdentity("oidc", "subject-1", null, null),
+            identity,
             CancellationToken.None);
 
         hasAccess.ShouldBeFalse();

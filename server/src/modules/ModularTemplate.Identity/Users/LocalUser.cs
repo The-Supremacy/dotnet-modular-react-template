@@ -1,29 +1,32 @@
+using ModularTemplate.Identity.Users.Events;
+using ModularTemplate.SharedKernel.Domain;
+
 namespace ModularTemplate.Identity.Users;
 
-public sealed class LocalUser
+public sealed class LocalUser : AggregateRoot<Guid>
 {
     private LocalUser(
         Guid id,
         string provider,
         string subject,
         string? displayName,
-        string? email,
+        EmailAddress? email,
         DateTimeOffset createdAt)
+        : base(id)
     {
-        Id = id;
         Provider = provider;
         Subject = subject;
         DisplayName = displayName;
         Email = email;
         CreatedAt = createdAt;
         LastSeenAt = createdAt;
+
+        RaiseDomainEvent(new LocalUserCreatedDomainEvent(id, provider, subject));
     }
 
     private LocalUser()
     {
     }
-
-    public Guid Id { get; private set; }
 
     public string Provider { get; private set; } = string.Empty;
 
@@ -31,7 +34,7 @@ public sealed class LocalUser
 
     public string? DisplayName { get; private set; }
 
-    public string? Email { get; private set; }
+    public EmailAddress? Email { get; private set; }
 
     public DateTimeOffset CreatedAt { get; private set; }
 
@@ -51,14 +54,15 @@ public sealed class LocalUser
             provider,
             subject,
             displayName,
-            email,
+            EmailAddress.FromNullable(email),
             DateTimeOffset.UtcNow);
     }
 
     public void MarkSeen(string? displayName, string? email)
     {
         DisplayName = displayName;
-        Email = email;
+        Email = EmailAddress.FromNullable(email);
         LastSeenAt = DateTimeOffset.UtcNow;
+        RaiseDomainEvent(new LocalUserSeenDomainEvent(Id, Provider, Subject));
     }
 }

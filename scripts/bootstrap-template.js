@@ -259,6 +259,23 @@ async function removeTemplateDocReferences(outputRoot) {
   await writeFile(docsReadme, `${filtered.join("\n").trimEnd()}\n`, "utf8");
 }
 
+async function removeTemplateOnlyGitignoreEntries(outputRoot) {
+  const gitignorePath = path.join(outputRoot, ".gitignore");
+  if (!existsSync(gitignorePath)) {
+    return;
+  }
+
+  const gitignore = await readFile(gitignorePath, "utf8");
+  const updated = gitignore.replace(
+    /\n# Template-local generated EF migrations\.\n# Bootstrapped product repositories remove this block so they can commit their\n# own migration history\.\nserver\/src\/[^/\r\n]+\.Persistence\/Migrations\/\n/g,
+    "\n",
+  );
+
+  if (updated !== gitignore) {
+    await writeFile(gitignorePath, updated, "utf8");
+  }
+}
+
 async function removeTemplateAutomation(outputRoot) {
   await rm(path.join(outputRoot, "scripts", "bootstrap-template.js"), {
     force: true,
@@ -366,6 +383,7 @@ async function bootstrap() {
   await rewriteFiles(outputRoot, mappings);
   await rewritePaths(outputRoot, mappings);
   await removeTemplateDocReferences(outputRoot);
+  await removeTemplateOnlyGitignoreEntries(outputRoot);
   await removeTemplateAutomation(outputRoot);
   await updateRootReadme(outputRoot, names);
 

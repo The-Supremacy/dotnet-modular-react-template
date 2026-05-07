@@ -1,3 +1,4 @@
+using Mediator;
 using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
@@ -11,7 +12,10 @@ using ModularTemplate.Host.Authorization;
 using ModularTemplate.Host.Configuration;
 using ModularTemplate.Host.Tests.Support;
 using ModularTemplate.Identity;
-using ModularTemplate.Identity.Persistence;
+using ModularTemplate.Identity.Access;
+using ModularTemplate.Identity.Contracts.CurrentUser;
+using ModularTemplate.Identity.CurrentUser;
+using ModularTemplate.Identity.Users;
 using Shouldly;
 
 namespace ModularTemplate.Host.Tests.Authorization;
@@ -51,8 +55,17 @@ public sealed class CookieApplicationAccessPolicyTests
         builder.AddHostAuthentication();
         builder.Services.RemoveAll<IDistributedCache>();
         builder.Services.AddDistributedMemoryCache();
-        builder.Services.AddSingleton<IIdentityStore, HostTestIdentityStore>();
         builder.Services.AddIdentityModule();
+        builder.Services.AddMediator(options =>
+        {
+            options.ServiceLifetime = ServiceLifetime.Scoped;
+            options.Assemblies = [typeof(ResolveCurrentUserCommand).Assembly];
+        });
+        builder.Services.RemoveAll<IPipelineBehavior<ResolveCurrentUserCommand, CurrentUserContext>>();
+        builder.Services.RemoveAll<IPipelineBehavior<GrantInitialApplicationAccessCommand, bool>>();
+        builder.Services.AddSingleton<HostTestIdentityContext>();
+        builder.Services.AddSingleton<ILocalUserRepository>(services => services.GetRequiredService<HostTestIdentityContext>());
+        builder.Services.AddSingleton<IApplicationAccessRepository>(services => services.GetRequiredService<HostTestIdentityContext>());
         builder.Services.AddApplicationAccessAuthorization();
 
         var app = builder.Build();

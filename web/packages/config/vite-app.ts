@@ -22,7 +22,7 @@ export function defineWebAppConfig(options: WebAppConfigOptions) {
         },
         "/auth": {
           target: hostTarget,
-          changeOrigin: true,
+          changeOrigin: false,
           secure: false,
         },
       },

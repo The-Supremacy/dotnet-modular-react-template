@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using ModularTemplate.Host.Configuration;
-using ModularTemplate.SharedKernel.Extensions;
 
 namespace ModularTemplate.Host.Features.Auth;
 
@@ -10,12 +9,10 @@ public static class AuthEndpoint
     {
         endpoints.MapGet(
                 "/auth/login",
-                (string? returnUrl) =>
+                (string? returnUrl, HttpRequest request) =>
                 {
-                    string redirectUri = returnUrl.ToSafeLocalReturnUrl();
-
                     return TypedResults.Challenge(
-                        new AuthenticationProperties { RedirectUri = redirectUri },
+                        new AuthenticationProperties { RedirectUri = returnUrl ?? "/" },
                         [HostAuthenticationConfiguration.OpenIdConnectScheme]);
                 })
             .ExcludeFromDescription();

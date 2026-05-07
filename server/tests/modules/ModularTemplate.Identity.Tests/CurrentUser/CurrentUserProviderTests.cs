@@ -10,13 +10,13 @@ public sealed class CurrentUserProviderTests
 {
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task GetCurrentUserAsync_creates_local_user_with_no_default_access()
+    public async Task GetCurrentUserAsync_WhenIdentityIsNew_CreatesLocalUserWithNoDefaultAccess()
     {
-        var store = new InMemoryIdentityStore();
-        var provider = new CurrentUserProvider(store);
+        var identityContext = new InMemoryIdentityContext();
+        var handler = new ResolveCurrentUserCommandHandler(identityContext, identityContext);
 
-        CurrentUserContext currentUser = await provider.GetCurrentUserAsync(
-            new AuthenticatedIdentity("oidc", "subject-1", "Ada", "ada@example.test"),
+        CurrentUserContext currentUser = await handler.Handle(
+            new ResolveCurrentUserCommand(new AuthenticatedIdentity("oidc", "subject-1", "Ada", "ada@example.test")),
             CancellationToken.None);
 
         currentUser.IsAuthenticated.ShouldBeTrue();
@@ -28,21 +28,19 @@ public sealed class CurrentUserProviderTests
 
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task GetCurrentUserAsync_uses_application_owned_access_records()
+    public async Task GetCurrentUserAsync_WhenApplicationAccessIsActive_ReturnsAccessState()
     {
-        var store = new InMemoryIdentityStore();
-        var provider = new CurrentUserProvider(store);
+        var identityContext = new InMemoryIdentityContext();
+        var handler = new ResolveCurrentUserCommandHandler(identityContext, identityContext);
         var identity = new AuthenticatedIdentity("oidc", "subject-1", "Ada", "ada@example.test");
-        CurrentUserContext created = await provider.GetCurrentUserAsync(
-            identity,
+        CurrentUserContext created = await handler.Handle(
+            new ResolveCurrentUserCommand(identity),
             CancellationToken.None);
 
-        await store.UpsertApplicationAccessAsync(
-            new ApplicationAccessRecord(Guid.NewGuid(), created.LocalUserId!.Value),
-            CancellationToken.None);
+        identityContext.Add(ApplicationAccess.GrantTo(created.LocalUserId!.Value));
 
-        CurrentUserContext currentUser = await provider.GetCurrentUserAsync(
-            identity,
+        CurrentUserContext currentUser = await handler.Handle(
+            new ResolveCurrentUserCommand(identity),
             CancellationToken.None);
 
         currentUser.HasApplicationAccess.ShouldBeTrue();
@@ -50,12 +48,13 @@ public sealed class CurrentUserProviderTests
 
     [Fact]
     [Trait("Category", "Unit")]
-    public async Task GetCurrentUserAsync_returns_unauthenticated_when_subject_is_missing()
+    public async Task GetCurrentUserAsync_WhenIdentityIsMissing_ReturnsUnauthenticated()
     {
-        var provider = new CurrentUserProvider(new InMemoryIdentityStore());
+        var identityContext = new InMemoryIdentityContext();
+        var handler = new ResolveCurrentUserCommandHandler(identityContext, identityContext);
 
-        CurrentUserContext currentUser = await provider.GetCurrentUserAsync(
-            null,
+        CurrentUserContext currentUser = await handler.Handle(
+            new ResolveCurrentUserCommand(null),
             CancellationToken.None);
 
         currentUser.ShouldBe(CurrentUserContext.Unauthenticated);

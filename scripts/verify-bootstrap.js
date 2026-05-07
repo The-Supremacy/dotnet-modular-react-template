@@ -152,6 +152,17 @@ async function scanPlaceholders(generatedRoot) {
   return matches;
 }
 
+async function assertProductMigrationsAreTrackable(generatedRoot) {
+  const gitignorePath = path.join(generatedRoot, ".gitignore");
+  const gitignore = await readFile(gitignorePath, "utf8");
+
+  if (/server\/src\/[^/\r\n]+\.Persistence\/Migrations\//.test(gitignore)) {
+    throw new Error(
+      "Bootstrapped product .gitignore must not ignore EF migrations.",
+    );
+  }
+}
+
 async function runFullValidation(generatedRoot) {
   const commands = [
     ["pnpm", ["install", "--frozen-lockfile"]],
@@ -192,6 +203,8 @@ async function main() {
         `Known template placeholders remain:\n${matches.join("\n")}`,
       );
     }
+
+    await assertProductMigrationsAreTrackable(outputRoot);
 
     if (args.full) {
       await runFullValidation(outputRoot);

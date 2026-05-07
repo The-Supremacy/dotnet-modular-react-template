@@ -8,7 +8,7 @@ public interface IIdentityDbContext
 {
     DbSet<LocalUser> LocalUsers { get; }
 
-    DbSet<ApplicationAccessRecord> ApplicationAccessRecords { get; }
+    DbSet<ApplicationAccess> ApplicationAccess { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

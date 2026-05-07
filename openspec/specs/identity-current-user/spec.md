@@ -3,9 +3,7 @@
 ## Purpose
 
 Defines Identity-owned current-user behavior, local user resolution, and application-owned access semantics.
-
 ## Requirements
-
 ### Requirement: Local User Resolution
 
 Identity MUST translate an authenticated identity with a stable provider subject into a stable local application user identity.
@@ -58,12 +56,18 @@ Identity MUST distinguish authenticated users without active application access 
 - **THEN** current-user behavior reports authenticated-without-access state
 
 ### Requirement: Minimal Initial Access Bootstrap
-
-Minimal initial application access bootstrap behavior MUST be idempotent, identify one configured provider/subject pair, create no product-specific role model, and expose no UI or API provisioning workflow.
+Minimal initial application access behavior MUST be idempotent, identify one
+configured provider/subject pair, create no product-specific role model, expose
+no UI or API provisioning workflow, and remain usable as an
+operator-controlled production bootstrap path.
 
 #### Scenario: Bootstrap runs multiple times
-
 - **WHEN** initial application access bootstrap runs repeatedly for the same
   configured provider and subject
 - **THEN** the same application-owned access state exists without duplicate
   access records or product-specific roles
+
+#### Scenario: Bootstrap configuration is absent
+- **WHEN** initial application access bootstrap runs without a configured
+  provider and subject
+- **THEN** no local user or application access state is created

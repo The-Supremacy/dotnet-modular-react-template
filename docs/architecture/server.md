@@ -17,11 +17,14 @@ Current direction:
   composition project with the concrete EF Core `ModularTemplateDbContext`.
 - `ModularTemplateDbContext` implements narrow module persistence interfaces,
   including the Identity persistence surface for local users and application
-  access records.
+  access.
 - The Migrator references the persistence project. The template does not
   include generated EF migrations.
 - SharedKernel contains only domain primitives at this gate: entity,
   aggregate-root, value-object, domain-event, and domain-exception base types.
+- Domain events are persisted by the shared DbContext into
+  `platform.domain_events` as an audit/event-log table. This is not durable
+  messaging, dispatch, inbox, or outbox processing.
 - ServiceDefaults provides OpenTelemetry, service discovery, default HTTP
   resilience, and development health endpoints.
 - Host configures problem-details responses, baseline exception handling, and
@@ -64,8 +67,23 @@ module service. Repository abstractions should represent module-owned domain
 persistence and should sit inside the module boundary; infrastructure
 implements those abstractions through narrow DbContext interfaces.
 
+Modules should use the `Mediator` library's command/query abstractions instead
+of template-owned dispatcher abstractions. Command handlers mutate aggregates
+through module-owned repositories and rely on a Mediator pipeline behavior to
+start a transaction, call the handler, save changes once, and commit after
+successful command handling. Query handlers read provider-neutral state and do
+not save changes.
+
+Command handlers should get decision-making data through repositories or
+command-side read ports, not by calling query handlers. Query handlers are
+application read use cases for callers that need read-side data.
+
+Aggregates own domain transitions and raise domain events. Domain event classes
+declare stable event type, aggregate type, and version metadata with explicit
+attributes so persisted event rows do not depend on CLR type names.
+
 Direct module stores are acceptable only when the accepted feature scope keeps
-the behavior small enough that a repository/query-handler split would add more
+the behavior small enough that a repository/query handler split would add more
 ceremony than clarity.
 
 ## Testing Conventions

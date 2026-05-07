@@ -27,6 +27,24 @@ and visible display text. Template automation is exposed through root `pnpm`
 scripts and implemented as Node `.js` scripts under `scripts/` so the helpers
 can be tested and packaged later.
 
+After bootstrapping a product repository, generate that product's initial EF
+migration before using the local Aspire platform:
+
+```sh
+dotnet tool restore
+
+DOTNET_ENVIRONMENT=Development ASPNETCORE_ENVIRONMENT=Development \
+  dotnet ef migrations add InitialCreate \
+  --project server/src/ModularTemplate.Persistence/ModularTemplate.Persistence.csproj \
+  --startup-project server/src/ModularTemplate.Host/ModularTemplate.Host.csproj \
+  --context ModularTemplateDbContext \
+  --output-dir Migrations
+```
+
+The template intentionally does not commit generated EF migrations, and
+`.gitignore` does not ignore migration folders so generated products can track
+their own migration history.
+
 Useful maintenance commands:
 
 - `pnpm api-client:generate`

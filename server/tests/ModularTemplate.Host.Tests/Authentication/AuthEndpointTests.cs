@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,6 +32,43 @@ public sealed class AuthEndpointTests
         response.Headers.Location.AbsoluteUri.ShouldStartWith("http://keycloak.test/authorize");
         response.Headers.Location.Query.ShouldContain("client_id=modular-template-host");
         response.Headers.Location.Query.ShouldContain("redirect_uri=");
+    }
+
+    [Fact]
+    [Trait("Category", "Application")]
+    public async Task Login_route_uses_forwarded_frontend_origin_for_oidc_callback()
+    {
+        using var app = await CreateAuthHostAsync();
+        using var client = app.GetTestClient();
+
+        using var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            "/auth/login?returnUrl=http%3A%2F%2Flocalhost%3A5173%2Fafter-login%3Ftab%3Dme%23profile");
+        request.Headers.Host = "localhost:5173";
+
+        HttpResponseMessage response = await client.SendAsync(request, CancellationToken.None);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Redirect);
+        response.Headers.Location.ShouldNotBeNull();
+        var query = QueryHelpers.ParseQuery(response.Headers.Location.Query);
+        query["redirect_uri"].ToString().ShouldBe("http://localhost:5173/auth/callback");
+    }
+
+    [Fact]
+    [Trait("Category", "Application")]
+    public async Task Login_route_ignores_untrusted_absolute_return_url_for_oidc_callback()
+    {
+        using var app = await CreateAuthHostAsync();
+        using var client = app.GetTestClient();
+
+        HttpResponseMessage response = await client.GetAsync(
+            "/auth/login?returnUrl=https%3A%2F%2Fexample.test%2Fafter-login",
+            CancellationToken.None);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Redirect);
+        response.Headers.Location.ShouldNotBeNull();
+        var query = QueryHelpers.ParseQuery(response.Headers.Location.Query);
+        query["redirect_uri"].ToString().ShouldNotContain("example.test");
     }
 
     [Fact]

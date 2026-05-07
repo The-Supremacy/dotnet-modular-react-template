@@ -21,6 +21,10 @@ aspire start --apphost orchestration/ModularTemplate.Orchestration/ModularTempla
 ```
 
 Use `aspire describe` to inspect resource endpoints and status after startup.
+IDE/F5 and direct `dotnet run` launches use the AppHost launch profile under
+`orchestration/ModularTemplate.Orchestration/Properties/launchSettings.json`;
+that profile provides the dashboard, OTLP, resource-service, and local
+HTTP-only development environment variables required by Aspire.
 
 ## Development Defaults
 
@@ -38,6 +42,11 @@ The admin and web Vite app resources receive `VITE_HOST_ORIGIN` from the local
 Host HTTP endpoint. Their Vite development servers continue to proxy `/api/`
 and `/auth/` routes to the Host rather than calling identity-provider endpoints
 directly from browser code.
+
+The Migrator runs `ModularTemplateDbContext` migrations during Aspire startup.
+This template intentionally does not include generated EF migrations, so a
+bootstrapped product repository should create and commit its own initial
+migration before relying on the local platform to create the schema.
 
 ## Browser Session Smoke
 

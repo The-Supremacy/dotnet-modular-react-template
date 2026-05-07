@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageVersion Include="Mediator" Version="1.0.2123" />
+    <PackageVersion Include="Mediator.SourceGenerator" Version="3.0.2" />
     <PackageVersion Include="Mediator.Abstractions" Version="3.0.2" />
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.2.4" />
     <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.2.4" />

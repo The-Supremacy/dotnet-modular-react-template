@@ -1,3 +1,4 @@
+using Mediator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -5,7 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using ModularTemplate.Host.Tests.Authentication;
 using ModularTemplate.Identity.Access;
-using ModularTemplate.Identity.Persistence;
+using ModularTemplate.Identity.Contracts.CurrentUser;
+using ModularTemplate.Identity.CurrentUser;
 using ModularTemplate.Identity.Users;
 
 namespace ModularTemplate.Host.Tests.Support;
@@ -27,60 +29,61 @@ public sealed class HostApplicationFactory(
                     TestAuthenticationHandler.Scheme,
                     _ => { });
 
-            services.RemoveAll<IIdentityStore>();
-            services.AddSingleton<IIdentityStore, HostTestIdentityStore>();
+            services.RemoveAll<ILocalUserRepository>();
+            services.RemoveAll<IApplicationAccessRepository>();
+            services.RemoveAll(typeof(IPipelineBehavior<,>));
+            services.RemoveAll<IPipelineBehavior<ResolveCurrentUserCommand, CurrentUserContext>>();
+            services.RemoveAll<IPipelineBehavior<GrantInitialApplicationAccessCommand, bool>>();
+            services.AddSingleton<HostTestIdentityContext>();
+            services.AddSingleton<ILocalUserRepository>(services => services.GetRequiredService<HostTestIdentityContext>());
+            services.AddSingleton<IApplicationAccessRepository>(services => services.GetRequiredService<HostTestIdentityContext>());
 
             configureServices?.Invoke(services);
         });
     }
 }
 
-internal sealed class HostTestIdentityStore : IIdentityStore
+internal sealed class HostTestIdentityContext :
+    ILocalUserRepository,
+    IApplicationAccessRepository
 {
-    private readonly List<ApplicationAccessRecord> _accessRecords = [];
+    private readonly List<ApplicationAccess> _accessRecords = [];
     private readonly List<LocalUser> _users = [];
 
-    public Task<LocalUser> GetOrCreateLocalUserAsync(
+    public Task<LocalUser?> GetByProviderSubjectAsync(
         string provider,
         string subject,
-        string? displayName,
-        string? email,
         CancellationToken cancellationToken)
     {
-        LocalUser? user = _users.SingleOrDefault(x => x.Provider == provider && x.Subject == subject);
-        if (user is null)
-        {
-            user = LocalUser.Create(provider, subject, displayName, email);
-            _users.Add(user);
-        }
-        else
-        {
-            user.MarkSeen(displayName, email);
-        }
+        return Task.FromResult(_users.SingleOrDefault(x => x.Provider == provider && x.Subject == subject));
+    }
 
+    public void Add(LocalUser user)
+    {
+        _users.Add(user);
         if (user.Subject.EndsWith("-with-access", StringComparison.Ordinal)
             && !_accessRecords.Any(x => x.LocalUserId == user.Id))
         {
-            _accessRecords.Add(new ApplicationAccessRecord(Guid.NewGuid(), user.Id));
+            _accessRecords.Add(ApplicationAccess.GrantTo(user.Id));
         }
-
-        return Task.FromResult(user);
     }
 
-    public Task<bool> HasActiveApplicationAccessAsync(
+    public Task<ApplicationAccess?> GetByLocalUserIdAsync(
+        Guid localUserId,
+        CancellationToken cancellationToken)
+    {
+        return Task.FromResult(_accessRecords.SingleOrDefault(x => x.LocalUserId == localUserId));
+    }
+
+    public Task<bool> HasActiveAccessAsync(
         Guid localUserId,
         CancellationToken cancellationToken)
     {
         return Task.FromResult(_accessRecords.Any(x => x.LocalUserId == localUserId && x.IsActive));
     }
 
-    public Task UpsertApplicationAccessAsync(
-        ApplicationAccessRecord accessRecord,
-        CancellationToken cancellationToken)
+    public void Add(ApplicationAccess access)
     {
-        _accessRecords.RemoveAll(x => x.LocalUserId == accessRecord.LocalUserId);
-        _accessRecords.Add(accessRecord);
-
-        return Task.CompletedTask;
+        _accessRecords.Add(access);
     }
 }
