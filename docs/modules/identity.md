@@ -1,7 +1,7 @@
 # Identity Module
 
-Identity is the first planned module because authentication and application
-authorization are template-level concerns.
+Identity owns template-level local identity and application authorization
+behavior.
 
 Identity owns:
 
@@ -34,7 +34,5 @@ The Host owns claim parsing. Identity current-user behavior consumes a
 provider-neutral authenticated identity value and resolves local user plus
 application access state from application-owned data.
 
-`IIdentityStore` is transitional scaffolding for this first behavior slice. It
-can remain until the template's durable DDD/CQRS persistence conventions are
-implemented, but it should be replaced or reshaped into repository/query-handler
-patterns before this slice is treated as final template guidance.
+`IIdentityStore` is the current narrow persistence boundary for the accepted
+identity behavior.

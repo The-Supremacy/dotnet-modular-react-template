@@ -1,24 +1,23 @@
 # Template Decisions
 
 This file records decisions made while building this template repository. It is
-planning context for the template itself and is not intended to become inherited
-product ADR history.
+maintenance context for the template itself and is not intended to become
+inherited product ADR history.
 
-Stable product-facing rules still belong in `docs/`, and accepted behavior
-still belongs in `openspec/specs/`.
+Stable product-facing rules belong in `docs/`, and accepted behavior contracts
+belong in `openspec/specs/`.
 
-## Accepted Direction
+## Implemented Direction
 
 - Use a monorepo with `server`, `web`, `orchestration`, `docs`, `deploy`, and
   `scripts` roots.
 - Use `ModularTemplate` as the placeholder .NET namespace and package prefix.
 - Keep the root solution in `.slnx` format as `ModularTemplate.slnx`.
-- Use OpenSpec as the current spec-driven development workflow.
+- Use OpenSpec as the default spec-driven development workflow for accepted
+  runtime and product-facing behavior contracts.
 - Keep hard template governance in `docs/governance.md`.
 - Use a shared Host-owned EF Core DbContext in `ModularTemplate.Persistence`,
   with narrow module DbContext interfaces to preserve module boundaries.
-- Keep generated EF migrations out of the template until naming/bootstrap
-  behavior is intentionally defined.
 - Keep auth mechanics in the Host and local identity/application-access
   behavior in the Identity module.
 - Use BFF-style browser sessions with Host-owned OIDC, application cookies, and
@@ -31,45 +30,33 @@ still belongs in `openspec/specs/`.
   same-origin app routes and must not store identity-provider tokens.
 - Use `web/packages/api-client` as the generated TypeScript client package for
   template-owned Host API endpoints.
-- For MVP 1, keep app-facing TanStack Query composition in
-  `web/packages/auth` and defer Hey API generated TanStack Query helpers until
-  additional Host API operations prove whether apps should consume generated
-  helpers directly or through template-owned shared wrappers.
-- Defer Scalar or other interactive API reference UIs until a dedicated local
-  API documentation/testing gate defines the auth model.
-- Defer durable intermodule messaging and outbox processing until a concrete
-  workflow needs them.
-- Defer Mailpit until a mail workflow exists.
-- Use a default GitHub Actions verification workflow for pull requests and
+- Keep app-facing TanStack Query composition in `web/packages/auth`; generated
+  TanStack Query helpers are not enabled in the API-client generator.
+- Use a default GitHub Actions workflow named `Verify` for pull requests and
   pushes to `main`.
+- Keep OpenSpec validation in its own CI job.
+- Run explicit backend restore, build, and filtered `Unit`/`Application` test
+  steps in CI, with backend test coverage collected and uploaded as a workflow
+  artifact.
+- Keep bootstrap verification out of default CI; run it locally for template
+  maintenance with `pnpm template:verify`.
 - Provide out-of-place template rename/bootstrap automation that accepts one
   product name and output path, derives all first-version naming forms, and
   verifies a temporary generated repository.
-- Defer Dependabot, Release Please, and template rename/bootstrap automation
-  extensions until their own accepted scopes exist.
-- Include a small browser-session smoke surface in both frontend apps after
-  generated clients exist, so the template exercises login, current-user, and
-  logout through the real Host OIDC session path.
-- Treat product creation as copy plus explicit rename/bootstrap automation
-  until a later change proves the template needs a fuller generator.
-- Keep `docs/template/` as template-repository planning context. Future
-  bootstrap automation should either exclude this folder from generated
-  products or rewrite it explicitly for product-owned planning.
+- Keep root `pnpm` scripts as the public template automation interface.
+- Keep template automation internals as Node `.js` scripts so the scripts are
+  easier to package and test later.
+- Treat product creation as copy plus explicit rename/bootstrap automation.
+- Keep `docs/template/` as template-repository planning context; bootstrap
+  automation excludes this folder from generated products.
 
-## Current Open Questions
+## Naming Model
 
-- When should full local-platform browser automation graduate into default CI
-  validation?
-- When additional Host API operations exist, should Hey API generated TanStack
-  Query helpers be imported directly by apps, or wrapped by shared frontend
-  packages?
-- If a future local API reference UI is added, should it use the existing BFF
-  cookie session, a separate OIDC client, or remain unauthenticated
-  documentation only?
-- Should generated product repositories inherit `docs/governance.md` unchanged
-  or receive product-specific bootstrap governance?
-- When should rename/bootstrap automation support explicit
-  namespace/package/resource slug overrides?
-- Should rename verification become part of default CI or stay a local/template
-  maintenance check?
-- What should the first template-change export/import packet schema include?
+The bootstrap command accepts one display-oriented product name and derives the
+first-version naming forms:
+
+- Input display name: `Acme Desk`
+- .NET namespace, project, and solution prefix: `AcmeDesk`
+- npm package scope and local service slug: `@acme-desk` and `acme-desk`
+- database names: `acme_desk`
+- visible app/docs display text: `Acme Desk`

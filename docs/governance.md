@@ -62,8 +62,8 @@ radius.
   Identity-provider roles, groups, organizations, or provider-specific claims
   MUST NOT be authoritative for product authorization.
 - Durable intermodule messaging, outbox processing, orchestration resources,
-  CI workflows, generated migrations, and template automation MUST remain
-  deferred until accepted feature artifacts or durable architecture decisions
+  CI workflows, generated migrations, and template automation MUST remain out
+  of scope unless accepted feature artifacts or durable architecture decisions
   state their scope.
 
 ## Development Workflow

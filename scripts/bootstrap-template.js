@@ -3,6 +3,7 @@ import {
   cp,
   mkdir,
   readFile,
+  readdir,
   rm,
   rename,
   stat,
@@ -21,8 +22,8 @@ const textFileExtensions = new Set([
   ".editorconfig",
   ".html",
   ".json",
+  ".js",
   ".md",
-  ".mjs",
   ".props",
   ".sh",
   ".slnx",
@@ -50,7 +51,7 @@ const excludedRelativePaths = new Set(["docs/template", "openspec/changes"]);
 
 function usage() {
   console.log(
-    `Usage: node scripts/bootstrap-template.mjs --product-name "Acme Desk" --output ../acme-desk`,
+    `Usage: node scripts/bootstrap-template.js --product-name "Acme Desk" --output ../acme-desk`,
   );
 }
 
@@ -180,9 +181,7 @@ function isTextFile(filePath) {
 }
 
 async function walk(root) {
-  const entries = await import("node:fs/promises").then((fs) =>
-    fs.readdir(root, { withFileTypes: true }),
-  );
+  const entries = await readdir(root, { withFileTypes: true });
   const results = [];
 
   for (const entry of entries) {
@@ -261,10 +260,10 @@ async function removeTemplateDocReferences(outputRoot) {
 }
 
 async function removeTemplateAutomation(outputRoot) {
-  await rm(path.join(outputRoot, "scripts", "bootstrap-template.mjs"), {
+  await rm(path.join(outputRoot, "scripts", "bootstrap-template.js"), {
     force: true,
   });
-  await rm(path.join(outputRoot, "scripts", "verify-bootstrap.mjs"), {
+  await rm(path.join(outputRoot, "scripts", "verify-bootstrap.js"), {
     force: true,
   });
 
@@ -282,10 +281,23 @@ async function removeTemplateAutomation(outputRoot) {
 
   const scriptsReadme = path.join(outputRoot, "scripts", "README.md");
   if (existsSync(scriptsReadme)) {
-    const lines = (await readFile(scriptsReadme, "utf8"))
-      .split(/\r?\n/)
-      .filter((line) => !line.includes("template rename"));
-    await writeFile(scriptsReadme, `${lines.join("\n").trimEnd()}\n`, "utf8");
+    const readme = `# Scripts
+
+Repository helper scripts live here.
+
+## Available Scripts
+
+- \`setup-openspec.sh\` installs the pinned OpenSpec CLI and initializes Codex
+  support. It refuses to reuse an existing \`openspec/\` directory unless
+  \`--force\` is passed.
+- \`generate-openapi.js\` generates the Host OpenAPI document used by the
+  frontend API client package.
+- \`generate-api-client.js\` refreshes the Host OpenAPI document and generated
+  frontend API client.
+- \`check-api-client.js\` verifies that the checked-in OpenAPI document and
+  generated frontend API client are current.
+`;
+    await writeFile(scriptsReadme, readme, "utf8");
   }
 }
 

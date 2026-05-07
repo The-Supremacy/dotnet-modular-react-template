@@ -102,11 +102,11 @@ contract generation and frontend consumption.
 - **THEN** current-user success and unauthenticated behavior are verified
   through the generated current-user client boundary
 
-### Requirement: MVP Query Helper Boundary
+### Requirement: Query Helper Boundary
 
-For MVP 1, the template MUST keep app-facing TanStack Query composition in
-template-owned shared packages and MUST NOT require frontend apps to import Hey
-API generated TanStack Query helpers directly.
+The template MUST keep app-facing TanStack Query composition in template-owned
+shared packages and MUST NOT require frontend apps to import Hey API generated
+TanStack Query helpers directly.
 
 #### Scenario: Current-user query composition is consumed
 
@@ -115,9 +115,9 @@ API generated TanStack Query helpers directly.
 - **AND** the helper loads current-user state through the generated API client
   operation
 
-#### Scenario: Generated query helpers are deferred
+#### Scenario: Generated query helpers are not enabled
 
-- **WHEN** the API client generation configuration is inspected for MVP 1
+- **WHEN** the API client generation configuration is inspected
 - **THEN** it generates SDK/types needed by current browser consumers
 - **AND** it does not expose generated TanStack Query helpers as the required
   app-facing query API

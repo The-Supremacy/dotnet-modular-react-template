@@ -9,7 +9,7 @@ Start with:
 
 Do not add domain behavior, auth/session plumbing, generated migrations,
 frontend apps, orchestration resources, CI workflows, or template automation
-until accepted feature artifacts or durable architecture decisions state the
+unless accepted feature artifacts or durable architecture decisions state the
 scope.
 
 <!-- OPENSPEC START -->

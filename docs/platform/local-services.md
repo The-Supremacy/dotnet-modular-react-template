@@ -10,7 +10,7 @@ The template's current local platform uses Aspire and includes:
 - Admin Vite app.
 - Web Vite app.
 
-Mailpit remains deferred until mail workflows exist.
+Mailpit is not part of the current local orchestration topology.
 
 ## Startup
 

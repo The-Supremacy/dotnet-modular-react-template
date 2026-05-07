@@ -13,8 +13,8 @@ created from the template.
   guidance.
 - [architecture/orchestration.md](architecture/orchestration.md) records local
   orchestration guidance.
-- [template/README.md](template/README.md) tracks the template plan and which
-  lanes need OpenSpec before implementation.
+- [template/README.md](template/README.md) indexes template-maintenance notes
+  that generated product repositories should not inherit as product guidance.
 - [modules/README.md](modules/README.md) indexes module documentation.
 - [platform/README.md](platform/README.md) indexes platform concerns.
 - [testing.md](testing.md) summarizes the testing strategy.

@@ -18,5 +18,5 @@ ServiceDefaults, shared persistence, SharedKernel primitives, Migrator wiring,
 and the initial Identity module boundary.
 
 `ModularTemplate.Persistence` contains the concrete EF Core DbContext shell.
-`ModularTemplate.Migrator` is wired to apply Host-owned migrations later, but
-the template does not include generated migrations yet.
+`ModularTemplate.Migrator` is the Host-owned migration entrypoint. The template
+does not include generated EF migrations.

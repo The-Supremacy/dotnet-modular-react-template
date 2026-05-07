@@ -16,8 +16,6 @@ and generated API clients.
   outside that folder.
 - `web/packages/config` owns shared Vite, Vitest, and TypeScript configuration
   used by frontend packages and apps.
-- Future shared packages should stay boring and reusable: UI primitives, API
-  clients, auth helpers, and test utilities.
 - Browser code calls same-origin BFF/API endpoints and does not store identity
   provider access or refresh tokens.
 - Local Vite apps proxy `/api/` and `/auth/` to the Host. Set
@@ -46,17 +44,14 @@ payloads.
 The local pre-commit hook and default CI workflow run `pnpm api-client:check`
 so OpenAPI/client drift is caught before merge.
 
-Hey API also supports TanStack Query generation. For MVP 1, the template
+Hey API also supports TanStack Query generation. The template currently
 generates SDK/types only and keeps app-facing query composition in
-`web/packages/auth`. Generated query helpers remain deferred until additional
-Host API operations prove whether apps should consume generated helpers
-directly or through template-owned wrappers. A future change can enable the
-plugin in
-`web/packages/api-client/openapi-ts.config.ts` with a shape like:
+`web/packages/auth`. The generated-client configuration does not enable the
+TanStack Query plugin:
 
 ```ts
 plugins: ["@tanstack/react-query"];
 ```
 
-That follow-up should revisit whether app code imports generated query helpers
-directly or whether shared packages wrap them behind template-owned helpers.
+App code consumes template-owned query helpers rather than generated TanStack
+Query helpers directly.

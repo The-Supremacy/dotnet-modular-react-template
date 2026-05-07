@@ -9,7 +9,6 @@ Expected local resources include:
 - PostgreSQL
 - Redis for BFF session tickets
 - Keycloak for local OIDC authentication
-- Mailpit, deferred until mail workflows exist
 - Vite frontend apps for the admin and web portals
 
 Orchestration lives under the top-level `orchestration/` folder.

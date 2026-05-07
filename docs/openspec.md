@@ -34,8 +34,8 @@ verification-only migration details may remain in archived changes, but they do
 not become active capability specs unless they define observable system
 behavior.
 
-Future changes should modify the existing capability spec that owns the
-behavior instead of re-specifying an entire historical feature.
+Changes modify the existing capability spec that owns the behavior instead of
+re-specifying an entire historical feature.
 
 ## Tooling
 

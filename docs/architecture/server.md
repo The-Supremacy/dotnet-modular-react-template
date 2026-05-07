@@ -18,9 +18,8 @@ Current direction:
 - `ModularTemplateDbContext` implements narrow module persistence interfaces,
   including the Identity persistence surface for local users and application
   access records.
-- The Migrator references the persistence project and is the entrypoint for
-  applying Host-owned migrations later.
-- Durable intermodule messaging is deferred until a concrete workflow needs it.
+- The Migrator references the persistence project. The template does not
+  include generated EF migrations.
 - SharedKernel contains only domain primitives at this gate: entity,
   aggregate-root, value-object, domain-event, and domain-exception base types.
 - ServiceDefaults provides OpenTelemetry, service discovery, default HTTP
@@ -65,9 +64,9 @@ module service. Repository abstractions should represent module-owned domain
 persistence and should sit inside the module boundary; infrastructure
 implements those abstractions through narrow DbContext interfaces.
 
-Direct module stores are acceptable only as temporary scaffolding when a feature
-precedes the full repository/query-handler conventions. They should be replaced
-or reshaped before the feature is accepted as durable template guidance.
+Direct module stores are acceptable only when the accepted feature scope keeps
+the behavior small enough that a repository/query-handler split would add more
+ceremony than clarity.
 
 ## Testing Conventions
 

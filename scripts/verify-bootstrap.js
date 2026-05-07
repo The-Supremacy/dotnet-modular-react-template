@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, readdir, rm, stat } from "node:fs/promises";
 import { spawn } from "node:child_process";
 import os from "node:os";
 import path from "node:path";
@@ -58,7 +58,7 @@ function parseArgs(argv) {
 
     if (arg === "--help" || arg === "-h") {
       console.log(
-        'Usage: node scripts/verify-bootstrap.mjs [--product-name "Acme Desk"] [--full] [--keep]',
+        'Usage: node scripts/verify-bootstrap.js [--product-name "Acme Desk"] [--full] [--keep]',
       );
       process.exit(0);
     }
@@ -97,7 +97,6 @@ function run(command, args, options = {}) {
 }
 
 async function walk(root) {
-  const { readdir } = await import("node:fs/promises");
   const entries = await readdir(root, { withFileTypes: true });
   const results = [];
 
@@ -180,7 +179,7 @@ async function main() {
 
   try {
     await run("node", [
-      path.join(repoRoot, "scripts", "bootstrap-template.mjs"),
+      path.join(repoRoot, "scripts", "bootstrap-template.js"),
       "--product-name",
       args.productName,
       "--output",

@@ -11,5 +11,4 @@ Current defaults:
 - Development-only `/health` and `/alive` health endpoints for web apps that
   call `MapDefaultEndpoints`.
 
-Future gates should document local dashboards and the boundaries between
-template defaults and product-specific telemetry.
+Local dashboards are not part of the current observability surface.

@@ -1,19 +1,21 @@
 {
   "name": "modular-template",
   "private": true,
+  "type": "module",
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "api-client:check": "scripts/check-api-client.sh",
-    "api-client:generate": "scripts/generate-api-client.sh",
-    "openapi:generate": "scripts/generate-openapi.sh",
+    "api-client:check": "node scripts/check-api-client.js",
+    "api-client:generate": "node scripts/generate-api-client.js",
+    "openapi:generate": "node scripts/generate-openapi.js",
     "prepare": "husky",
     "frontend:build": "pnpm --filter './web/apps/*' build",
     "frontend:lint": "eslint web --max-warnings 0",
     "frontend:test": "pnpm --filter './web/apps/*' --filter './web/packages/*' test",
     "frontend:typecheck": "pnpm --filter './web/apps/*' --filter './web/packages/*' typecheck",
-    "template:bootstrap": "node scripts/bootstrap-template.mjs",
-    "template:verify": "node scripts/verify-bootstrap.mjs"
+    "scripts:lint": "eslint scripts --max-warnings 0",
+    "template:bootstrap": "node scripts/bootstrap-template.js",
+    "template:verify": "node scripts/verify-bootstrap.js"
   },
   "devDependencies": {
     "@commitlint/cli": "20.5.3",
