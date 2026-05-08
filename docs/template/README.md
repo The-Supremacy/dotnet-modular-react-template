@@ -7,8 +7,8 @@ Files:
 
 - [template-decisions.md](template-decisions.md) records template-building
   decisions that explain implemented repository behavior.
-- [todo.md](todo.md) tracks temporary cleanup and packaging questions that are
-  not part of stable generated-product documentation.
+- [release-readiness.md](release-readiness.md) tracks the release and
+  bootstrap-population plan for template-maintenance work.
 
 Current maintenance entrypoints:
 
