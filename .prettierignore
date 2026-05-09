@@ -19,6 +19,8 @@ obj/
 .env*
 .npmignore
 template/.npmignore
+CHANGELOG.md
+template/CHANGELOG.md
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
