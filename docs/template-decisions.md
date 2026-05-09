@@ -34,14 +34,16 @@ contracts belong in `template/openspec/specs/`.
   template-owned Host API endpoints.
 - Keep app-facing TanStack Query composition in `web/packages/auth`; generated
   TanStack Query helpers are not enabled in the API-client generator.
-- Use a default GitHub Actions workflow named `Verify` for pull requests and
-  pushes to `main`.
+- Use a default generated-product GitHub Actions workflow named `Verify` for
+  pull requests and pushes to `main`.
 - Keep OpenSpec validation in its own CI job.
 - Run explicit backend restore, build, and filtered `Unit`/`Application` test
   steps in CI, with backend test coverage collected and uploaded as a workflow
   artifact.
-- Keep focused bootstrap verification in factory CI. Reserve full
-  generated-product verification for release readiness.
+- Keep focused bootstrap verification in the factory `Template Factory` CI
+  workflow. Reserve full generated-product verification for release readiness.
+- Publish the factory package from the GitHub release workflow with npm
+  provenance and `NPM_TOKEN`.
 - Provide out-of-place template rename/bootstrap automation that accepts one
   product name and output path, derives all first-version naming forms, and
   verifies a temporary generated repository.

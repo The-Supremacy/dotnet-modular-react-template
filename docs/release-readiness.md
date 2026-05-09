@@ -63,6 +63,13 @@ Before cutting a release, run full generated-product verification:
 pnpm template:verify:full
 ```
 
+Before testing the template payload directly from `template/`, remove any
+template-local ignored EF migrations from previous manual runs:
+
+```sh
+rm -rf template/server/src/ModularTemplate.Persistence/Migrations
+```
+
 ## Runtime Baseline
 
 - Node is pinned through pnpm `devEngines.runtime` in both the factory root and
@@ -93,23 +100,27 @@ pnpm template:verify:full
 
 ## V1 Checklist
 
+Already implemented for the first delivery:
+
+1. Focused script tests for name derivation, manifest rules, placeholder
+   rewriting, path renaming, and generated sample checks.
+2. Dependabot at the factory root for factory dependencies and GitHub Actions.
+3. Dependabot under `template/.github/` for generated-product npm, NuGet, and
+   GitHub Actions dependencies.
+4. Release Please at the factory root for template-factory releases.
+5. Release Please under `template/.github/` so generated product repositories
+   inherit product-owned release automation.
+6. Factory-root npm CLI packaging that ships the generated-product payload.
+
 Required before v1:
 
-1. Add focused script tests for name derivation, manifest rules, placeholder
-   rewriting, path renaming, and generated sample checks.
-2. Add Dependabot at the factory root for factory dependencies and GitHub
-   Actions.
-3. Add Dependabot under `template/.github/` for generated-product npm, NuGet,
-   and GitHub Actions dependencies.
-4. Add Release Please at the factory root for template-factory releases.
-5. Add Release Please under `template/.github/` so generated product
-   repositories inherit product-owned release automation.
-6. Package the factory as an npm CLI and verify the packed tarball can bootstrap
-   a generated product.
-7. Run `pnpm template:verify:full` in a clean Node 24 environment.
-8. Bootstrap a throwaway product repository and manually confirm the first-use
+1. Verify the packed tarball can bootstrap a generated product.
+2. Run `pnpm template:verify:full` in a clean Node 24 environment.
+3. Bootstrap a throwaway product repository and manually confirm the first-use
    path: install, initial EF migration, Aspire startup, generated product
    hooks, and inherited CI files.
+4. Publish from the GitHub release workflow, then verify the npm CLI from a
+   separate throwaway directory.
 
 Good candidates for post-v1:
 
