@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\ModularTemplate.Persistence\ModularTemplate.Persistence.csproj" />
+    <ProjectReference Include="..\..\..\src\modules\ModularTemplate.Identity.Infrastructure\ModularTemplate.Identity.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\src\modules\ModularTemplate.Identity\ModularTemplate.Identity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+  </ItemGroup>
+</Project>

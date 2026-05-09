@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\modules\ModularTemplate.Identity\ModularTemplate.Identity.csproj" />
+    <ProjectReference Include="..\..\..\src\modules\ModularTemplate.Identity.Contracts\ModularTemplate.Identity.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSubstitute" />
+  </ItemGroup>
+</Project>
