@@ -92,8 +92,9 @@ rm -rf template/server/src/ModularTemplate.Persistence/Migrations
   repositories.
 - Productized transforms should be rare because `template/` can contain the
   generated-product version of root-level files directly.
-- OpenSpec specs, OpenSpec skills, `.agents`, product `.github`, `.husky`,
-  `.vscode`, and product docs belong in `template/`.
+- Product `.github`, `.husky`, `.vscode`, and product docs belong in
+  `template/`. Generated repositories do not inherit pre-populated OpenSpec
+  specs or skills; products can initialize OpenSpec after bootstrap.
 - Future release automation such as Dependabot and Release Please should be
   inherited by generated products once added, with publishing/deployment steps
   kept product-owned.

@@ -28,6 +28,6 @@ the default CI workflow.
 The default CI workflow lives at `.github/workflows/verify.yml`, is named
 `Verify`, and runs on pull requests and pushes to `main`. It runs backend
 restore, build, filtered tests with coverage collection, frontend validation,
-generated API client drift checks, and OpenSpec validation with
+and generated API client drift checks with
 `ASPNETCORE_ENVIRONMENT=Development`, matching the local OpenAPI generation
 configuration. Aspire/browser automation is outside the default CI surface.

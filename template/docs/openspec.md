@@ -1,6 +1,7 @@
-# OpenSpec Usage
+# OpenSpec Setup
 
-OpenSpec is the template's default spec-driven development workflow.
+OpenSpec is optional in this starter repository. Initialize it when the product
+has real system behavior that benefits from accepted behavior specs.
 
 ## When To Use It
 
@@ -8,34 +9,34 @@ Use OpenSpec for system behavior that needs durable acceptance criteria,
 user-visible semantics, cross-artifact planning, or accepted current-state
 capability specs. Narrow documentation, governance, tooling, implementation
 structure, and verification-only changes can be handled directly when they do
-not change runtime behavior.
+not define product behavior.
 
 Do not add domain behavior, auth/session plumbing, generated migrations,
 frontend apps, orchestration resources, CI workflows, generated clients, or
-template automation without an accepted OpenSpec change or durable architecture
-decision that states the scope.
+template automation without product-owned feature artifacts or a durable
+architecture decision that states the scope.
 
 ## Preferred Flow
 
-1. Read [governance.md](governance.md), relevant stable docs, and current specs
-   under `openspec/specs/`.
-2. Create a change with `openspec new change <name>`.
-3. Write `proposal.md`, behavior capability specs under `specs/`, `design.md`
+1. Install the pinned OpenSpec CLI with
+   [setup-openspec.sh](../scripts/setup-openspec.sh).
+2. Initialize OpenSpec in the product repository with Codex support:
+   `openspec init --tools codex .`.
+3. Read [governance.md](governance.md) and relevant stable docs.
+4. Create a change with `openspec new change <name>`.
+5. Write `proposal.md`, behavior capability specs under `specs/`, `design.md`
    when the change is cross-cutting, and `tasks.md`.
-4. Validate with `openspec validate <change-name> --strict`.
-5. Implement and verify the task list.
-6. Archive accepted changes with `openspec archive <change-name> --yes` so
+6. Validate with `openspec validate <change-name> --strict`.
+7. Implement and verify the task list.
+8. Archive accepted changes with `openspec archive <change-name> --yes` so
    current behavior is merged into `openspec/specs/`.
 
 ## Current Specs
 
-Accepted behavior lives under `openspec/specs/`. Technical, governance, and
-verification-only migration details may remain in archived changes, but they do
-not become active capability specs unless they define observable system
-behavior.
-
-Changes modify the existing capability spec that owns the behavior instead of
-re-specifying an entire historical feature.
+The template intentionally does not ship pre-populated OpenSpec specs or
+archived changes. Once a product initializes OpenSpec, accepted behavior should
+live under `openspec/specs/`, and active changes should live under
+`openspec/changes/`.
 
 ## Tooling
 

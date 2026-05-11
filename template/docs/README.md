@@ -15,4 +15,4 @@ This folder contains stable product documentation.
 - [modules/README.md](modules/README.md) indexes module documentation.
 - [platform/README.md](platform/README.md) indexes platform concerns.
 - [testing.md](testing.md) summarizes the testing strategy.
-- [openspec.md](openspec.md) describes how this repository uses OpenSpec.
+- [openspec.md](openspec.md) describes optional OpenSpec setup.

@@ -111,8 +111,8 @@ Expected:
 - The generated repository contains product files at its root, not under
   `template/`.
 - Names are rewritten to `SmokeDesk`, `smoke-desk`, and `smoke_desk`.
-- Product CI, Husky hooks, VS Code/Aspire config, docs, and OpenSpec artifacts
-  are present.
+- Product CI, Husky hooks, VS Code/Aspire config, and docs are present.
+- Pre-populated OpenSpec artifacts are absent.
 - Factory-only docs and packaging files are absent.
 - The generated product starts locally from Aspire.
 

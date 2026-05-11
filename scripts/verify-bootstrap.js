@@ -251,10 +251,6 @@ async function runFullValidation(generatedRoot) {
   const commands = [
     ["pnpm", ["install", "--frozen-lockfile"]],
     ["pnpm", ["format:check"]],
-    [
-      "pnpm",
-      ["dlx", "@fission-ai/openspec@1.3.1", "validate", "--all", "--strict"],
-    ],
     ["dotnet", ["test", "AcmeDesk.slnx"]],
     ["pnpm", ["frontend:typecheck"]],
     ["pnpm", ["frontend:test"]],
@@ -302,9 +298,6 @@ async function main() {
       );
       console.log("- pnpm install --frozen-lockfile");
       console.log("- pnpm format:check");
-      console.log(
-        "- pnpm dlx @fission-ai/openspec@1.3.1 validate --all --strict",
-      );
       console.log("- dotnet test AcmeDesk.slnx");
       console.log("- pnpm frontend:typecheck");
       console.log("- pnpm frontend:test");
