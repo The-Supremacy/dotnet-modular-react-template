@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/The-Supremacy/dotnet-modular-react-template.git"
   },
-  "packageManager": "pnpm@10.33.3",
+  "packageManager": "pnpm@10.33.4",
   "type": "module",
   "bin": {
     "dotnet-modular-react-template": "scripts/bootstrap-template.js"
@@ -41,7 +41,7 @@
   },
   "engines": {
     "node": ">=24.0.0",
-    "pnpm": ">=10.33.3 <11"
+    "pnpm": ">=10.33.4 <11"
   },
   "devEngines": {
     "runtime": {
@@ -64,13 +64,13 @@
     "verify": "pnpm format:check && pnpm scripts:lint && pnpm scripts:test && pnpm template:verify:dry-run && pnpm template:verify"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.3",
+    "@commitlint/cli": "21.0.0",
     "@commitlint/config-conventional": "21.0.0",
     "@eslint/js": "10.0.1",
     "eslint": "10.3.0",
     "husky": "9.1.7",
     "prettier": "3.8.3",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.2"
+    "typescript-eslint": "8.59.3"
   }
 }
