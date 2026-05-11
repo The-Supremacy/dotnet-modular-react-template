@@ -4,9 +4,7 @@ Repository helper scripts live here.
 
 ## Available Scripts
 
-- `setup-openspec.sh` installs the pinned OpenSpec CLI and initializes Codex
-  support. It refuses to reuse an existing `openspec/` directory unless
-  `--force` is passed.
+- `setup-openspec.sh` installs the pinned OpenSpec CLI globally.
 - `generate-openapi.js` generates the Host OpenAPI document used by the
   frontend API client package.
 - `generate-api-client.js` refreshes the Host OpenAPI document and generated

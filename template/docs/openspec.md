@@ -40,6 +40,6 @@ re-specifying an entire historical feature.
 ## Tooling
 
 Run [setup-openspec.sh](../scripts/setup-openspec.sh) to install the pinned
-OpenSpec CLI and initialize Codex support in a fresh checkout.
+OpenSpec CLI globally.
 
 OpenSpec is intentionally not installed from devcontainer lifecycle hooks.
