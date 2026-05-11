@@ -206,6 +206,9 @@ test("bootstraps a generated sample with renamed manifests and product CI files"
     assert.equal(packageJson.name, "north-star");
     assert.match(workflow, /dotnet restore NorthStar\.slnx/);
     assert.doesNotMatch(gitignore, /Persistence\/Migrations\//);
+    await assert.rejects(readFile(path.join(outputRoot, "README.md")), {
+      code: "ENOENT",
+    });
     await assert.rejects(
       stat(
         path.join(
@@ -223,6 +226,77 @@ test("bootstraps a generated sample with renamed manifests and product CI files"
         () => true,
       ),
       true,
+    );
+  });
+});
+
+test("bootstraps into an existing repository with README and LICENSE", async () => {
+  await withTempDir(async (tempDir) => {
+    const outputRoot = path.join(tempDir, "north-star");
+    await mkdir(outputRoot);
+    await writeFile(path.join(outputRoot, "README.md"), "# Existing\n", "utf8");
+    await writeFile(path.join(outputRoot, "LICENSE"), "Existing\n", "utf8");
+
+    await execFileAsync(process.execPath, [
+      bootstrapScript,
+      "--product-name",
+      "North Star",
+      "--output",
+      outputRoot,
+    ]);
+
+    const packageJson = JSON.parse(
+      await readFile(path.join(outputRoot, "package.json"), "utf8"),
+    );
+    const gitignore = await readFile(
+      path.join(outputRoot, ".gitignore"),
+      "utf8",
+    );
+
+    assert.equal(packageJson.name, "north-star");
+    assert.equal(
+      await readFile(path.join(outputRoot, "README.md"), "utf8"),
+      "# Existing\n",
+    );
+    assert.equal(
+      await readFile(path.join(outputRoot, "LICENSE"), "utf8"),
+      "Existing\n",
+    );
+    assert.match(
+      await readFile(
+        path.join(outputRoot, ".github", "workflows", "verify.yml"),
+        "utf8",
+      ),
+      /dotnet restore NorthStar\.slnx/,
+    );
+    assert.match(gitignore, /node_modules/);
+    assert.doesNotMatch(gitignore, /Persistence\/Migrations\//);
+    assert.equal(
+      await readFile(path.join(outputRoot, "NorthStar.slnx"), "utf8").then(
+        () => true,
+      ),
+      true,
+    );
+  });
+});
+
+test("rejects existing repository bootstrap when generated paths would conflict", async () => {
+  await withTempDir(async (tempDir) => {
+    const outputRoot = path.join(tempDir, "north-star");
+    await mkdir(path.join(outputRoot, ".git"), { recursive: true });
+    await writeFile(path.join(outputRoot, ".gitignore"), "existing\n", "utf8");
+
+    await assert.rejects(
+      execFileAsync(process.execPath, [
+        bootstrapScript,
+        "--product-name",
+        "North Star",
+        "--output",
+        outputRoot,
+      ]),
+      (error) =>
+        error.stderr.includes(".gitignore") &&
+        error.stderr.includes("already exists"),
     );
   });
 });

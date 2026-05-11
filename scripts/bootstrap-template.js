@@ -2,12 +2,15 @@
 import {
   cp,
   mkdir,
+  mkdtemp,
   readFile,
   readdir,
   rename,
+  rm,
   stat,
   writeFile,
 } from "node:fs/promises";
+import os from "node:os";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -71,7 +74,6 @@ const textFileExtensions = new Set(manifest.textFileExtensions);
 const textFileNames = new Set(manifest.textFileNames);
 const ignoredSegments = new Set(manifest.ignoredSegments);
 const ignoredRelativePaths = new Set(manifest.ignoredRelativePaths);
-
 function usage() {
   console.log(
     `Usage: node scripts/bootstrap-template.js --product-name "Acme Desk" --output ../acme-desk [--dry-run]`,
@@ -273,29 +275,11 @@ async function removeTemplateOnlyGitignoreEntries(outputRoot) {
   }
 }
 
-async function updateRootReadme(outputRoot, names) {
-  const readmePath = path.join(outputRoot, "README.md");
-  if (!existsSync(readmePath)) {
-    return;
+async function validateExistingOutputRoot(outputRoot) {
+  const outputStat = await stat(outputRoot);
+  if (!outputStat.isDirectory()) {
+    throw new Error(`Existing output path must be a directory: ${outputRoot}`);
   }
-
-  const readme = `# ${names.slug}
-
-${names.display} product repository bootstrapped from the .NET + React modular-monolith template.
-
-Substantial runtime behavior starts from accepted OpenSpec artifacts or durable
-architecture decisions. Stable governance, architecture, platform, testing, and
-module guidance lives under \`docs/\`.
-
-Start with:
-
-- [docs/README.md](docs/README.md) for stable documentation.
-- [docs/governance.md](docs/governance.md) for hard project rules.
-- [docs/openspec.md](docs/openspec.md) for the spec-driven development
-  workflow.
-`;
-
-  await writeFile(readmePath, readme, "utf8");
 }
 
 async function rewriteFiles(outputRoot, mappings) {
@@ -305,6 +289,51 @@ async function rewriteFiles(outputRoot, mappings) {
     if (entryStat.isFile()) {
       await rewriteFile(entry, mappings);
     }
+  }
+}
+
+async function createGeneratedOutput(outputRoot, mappings) {
+  await mkdir(path.dirname(outputRoot), { recursive: true });
+  await cp(manifest.source, outputRoot, {
+    dereference: false,
+    errorOnExist: true,
+    filter: (src) => !shouldExclude(src),
+    force: false,
+    recursive: true,
+  });
+
+  await rewriteFiles(outputRoot, mappings);
+  await rewritePaths(outputRoot, mappings);
+  await removeTemplateOnlyGitignoreEntries(outputRoot);
+}
+
+async function copyGeneratedIntoExisting(stagedRoot, outputRoot) {
+  const entries = await readdir(stagedRoot);
+
+  for (const entry of entries) {
+    const sourcePath = path.join(stagedRoot, entry);
+    const destinationPath = path.join(outputRoot, entry);
+
+    await cp(sourcePath, destinationPath, {
+      dereference: false,
+      errorOnExist: true,
+      force: false,
+      recursive: true,
+    });
+  }
+}
+
+async function createGeneratedOutputInExisting(outputRoot, mappings, names) {
+  await validateExistingOutputRoot(outputRoot);
+
+  const tempDir = await mkdtemp(path.join(os.tmpdir(), "template-bootstrap-"));
+  const stagedRoot = path.join(tempDir, names.slug);
+
+  try {
+    await createGeneratedOutput(stagedRoot, mappings);
+    await copyGeneratedIntoExisting(stagedRoot, outputRoot);
+  } finally {
+    await rm(tempDir, { force: true, recursive: true });
   }
 }
 
@@ -319,38 +348,34 @@ async function bootstrap() {
   }
 
   const outputRoot = path.resolve(args.output);
-  if (existsSync(outputRoot)) {
-    throw new Error(`Output path already exists: ${outputRoot}`);
-  }
+  const outputExists = existsSync(outputRoot);
 
   const names = deriveNames(args.productName);
   const mappings = getMappings(names);
 
   if (args.dryRun) {
-    console.log(`Would create ${names.display} at ${outputRoot}`);
+    const action = outputExists ? "bootstrap into" : "create";
+    console.log(`Would ${action} ${names.display} at ${outputRoot}`);
     console.log(`Source: ${manifest.source}`);
     console.log(`Namespace: ${names.pascal}`);
     console.log(`Slug: ${names.slug}`);
     console.log(`Database slug: ${names.snake}`);
     console.log(`NPM scope: ${names.npmScope}`);
+    if (outputExists) {
+      console.log("Stop on generated path conflicts");
+    }
     return;
   }
 
-  await mkdir(path.dirname(outputRoot), { recursive: true });
-  await cp(manifest.source, outputRoot, {
-    dereference: false,
-    errorOnExist: true,
-    filter: (src) => !shouldExclude(src),
-    force: false,
-    recursive: true,
-  });
+  if (outputExists) {
+    await createGeneratedOutputInExisting(outputRoot, mappings, names);
+  } else {
+    await createGeneratedOutput(outputRoot, mappings);
+  }
 
-  await rewriteFiles(outputRoot, mappings);
-  await rewritePaths(outputRoot, mappings);
-  await removeTemplateOnlyGitignoreEntries(outputRoot);
-  await updateRootReadme(outputRoot, names);
-
-  console.log(`Created ${names.display} at ${outputRoot}`);
+  console.log(
+    `${outputExists ? "Bootstrapped" : "Created"} ${names.display} at ${outputRoot}`,
+  );
   console.log(`Namespace: ${names.pascal}`);
   console.log(`Slug: ${names.slug}`);
   console.log(`Database slug: ${names.snake}`);
@@ -378,4 +403,5 @@ export {
   rewriteFile,
   rewritePaths,
   shouldExclude,
+  validateExistingOutputRoot,
 };

@@ -29,6 +29,11 @@ When developing the factory locally, use the root script:
 pnpm template:bootstrap -- --product-name "Acme Desk" --output ../acme-desk
 ```
 
+The output path may be missing or may already be an existing repository. The
+template payload does not include `README.md` or `LICENSE`, so repository-host
+defaults can remain in place. Bootstrap stops if any generated path would
+replace an existing file or directory.
+
 To test the installable package before publication, pack it and run the tarball:
 
 ```sh

@@ -20,6 +20,11 @@ Create a product repository copy:
 pnpm template:bootstrap -- --product-name "Acme Desk" --output ../acme-desk
 ```
 
+The output path may be missing or may already be an existing repository. The
+template payload does not include `README.md` or `LICENSE`, so repository-host
+defaults can remain in place. Bootstrap stops if any generated path would
+replace an existing file or directory.
+
 Preview the derived names and target path without writing files:
 
 ```sh

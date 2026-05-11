@@ -52,6 +52,11 @@ contracts belong in `template/openspec/specs/`.
   easier to package and test later.
 - Treat product creation as copy from `template/` plus explicit
   rename/bootstrap automation.
+- Keep `README.md` and `LICENSE` out of the template payload so repository-host
+  defaults do not conflict with bootstrap.
+- Let the bootstrap command target either a missing path or an existing
+  repository path. Bootstrap stops when any generated path would replace an
+  existing file or directory.
 - Keep template-factory planning context directly under root `docs/`.
 - Publish the factory root as the `dotnet-modular-react-template` npm CLI
   package. The package ships the generated-product payload and exposes
