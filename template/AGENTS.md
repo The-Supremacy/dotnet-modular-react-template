@@ -4,8 +4,8 @@ This repository is a domain-neutral .NET + React modular-monolith template.
 
 Start with:
 
-- [README.md](README.md) for repository status and entrypoints.
 - [docs/README.md](docs/README.md) for stable documentation.
+- [docs/governance.md](docs/governance.md) for hard project rules.
 
 Do not add domain behavior, auth/session plumbing, generated migrations,
 frontend apps, orchestration resources, CI workflows, or template automation
