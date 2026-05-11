@@ -21,6 +21,8 @@ they have real system behavior to specify.
 - Keep hard product governance in `template/docs/governance.md`.
 - Use a shared Host-owned EF Core DbContext in `ModularTemplate.Persistence`,
   with narrow module DbContext interfaces to preserve module boundaries.
+- Include an intentional baseline `InitialCreate` EF migration in generated
+  products so the inherited Migrator can create the first local schema.
 - Keep auth mechanics in the Host and local identity/application-access
   behavior in the Identity module.
 - Use BFF-style browser sessions with Host-owned OIDC, application cookies, and

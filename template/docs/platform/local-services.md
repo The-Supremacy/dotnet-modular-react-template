@@ -75,9 +75,8 @@ and `/auth/` routes to the Host rather than calling identity-provider endpoints
 directly from browser code.
 
 The Migrator runs `ModularTemplateDbContext` migrations during Aspire startup.
-This repository intentionally starts without generated EF migrations, so create
-and commit the initial migration before relying on the local platform to create
-the schema.
+Generated repositories include a baseline `InitialCreate` migration so the
+local platform can create the first Host-owned schema on a fresh database.
 
 ## Browser Session Smoke
 

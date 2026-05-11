@@ -216,7 +216,7 @@ async function assertProductMigrationsAreTrackable(generatedRoot) {
   }
 }
 
-async function assertProductStartsWithoutMigrations(generatedRoot) {
+async function assertProductIncludesBaselineMigration(generatedRoot) {
   const persistenceRoot = path.join(generatedRoot, "server", "src");
   const entries = await readdir(persistenceRoot, { withFileTypes: true });
   const persistenceProject = entries.find(
@@ -233,17 +233,24 @@ async function assertProductStartsWithoutMigrations(generatedRoot) {
     "Migrations",
   );
 
-  try {
-    await stat(migrationsPath);
-  } catch (error) {
-    if (error.code === "ENOENT") {
-      return;
-    }
+  const migrationEntries = await readdir(migrationsPath);
+  const projectPrefix = persistenceProject.name.replace(/\.Persistence$/, "");
+  const hasInitialMigration = migrationEntries.some((entry) =>
+    /^\d{14}_InitialCreate\.cs$/.test(entry),
+  );
+  const hasInitialDesigner = migrationEntries.some((entry) =>
+    /^\d{14}_InitialCreate\.Designer\.cs$/.test(entry),
+  );
 
-    throw error;
+  if (
+    !hasInitialMigration ||
+    !hasInitialDesigner ||
+    !migrationEntries.includes(`${projectPrefix}DbContextModelSnapshot.cs`)
+  ) {
+    throw new Error(
+      "Bootstrapped product must include the baseline InitialCreate EF migration.",
+    );
   }
-
-  throw new Error("Bootstrapped product must start without EF migrations.");
 }
 
 async function runFullValidation(generatedRoot) {
@@ -288,7 +295,7 @@ async function main() {
     }
 
     await assertProductMigrationsAreTrackable(outputRoot);
-    await assertProductStartsWithoutMigrations(outputRoot);
+    await assertProductIncludesBaselineMigration(outputRoot);
 
     if (args.full) {
       await runFullValidation(outputRoot);

@@ -23,11 +23,6 @@ coverage/
 playwright-report/
 test-results/
 
-# Template-local generated EF migrations.
-# Bootstrapped product repositories remove this block so they can commit their
-# own migration history.
-template/server/src/ModularTemplate.Persistence/Migrations/
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

@@ -8,4 +8,3 @@
 **/playwright-report/
 **/test-results/
 template/.husky/_/
-template/server/src/ModularTemplate.Persistence/Migrations/

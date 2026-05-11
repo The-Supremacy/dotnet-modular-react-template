@@ -42,21 +42,9 @@ export ASPIRE_CONTAINER_RUNTIME=podman
 From `template/`:
 
 ```sh
-rm -rf server/src/ModularTemplate.Persistence/Migrations
 pnpm install --frozen-lockfile
 dotnet tool restore
 dotnet restore ModularTemplate.slnx
-```
-
-Create the initial product-owned EF migration:
-
-```sh
-DOTNET_ENVIRONMENT=Development ASPNETCORE_ENVIRONMENT=Development \
-  dotnet ef migrations add InitialCreate \
-  --project server/src/ModularTemplate.Persistence/ModularTemplate.Persistence.csproj \
-  --startup-project server/src/ModularTemplate.Host/ModularTemplate.Host.csproj \
-  --context ModularTemplateDbContext \
-  --output-dir Migrations
 ```
 
 Start Aspire:
@@ -69,26 +57,18 @@ ASPIRE_CONTAINER_RUNTIME=${ASPIRE_CONTAINER_RUNTIME:-docker} \
 Expected:
 
 - PostgreSQL, Redis, Keycloak, Migrator, Host, Admin, and Web resources start.
-- Migrator applies the initial migration.
+- Migrator applies the checked-in baseline migration.
 - Admin and Web apps load.
 - Browser auth smoke works with:
   - `admin@example.test` / `Password123!`
   - `user@example.test` / `Password123!`
 - Logout returns the app to an unauthenticated state.
 
-After this test, remove the generated migration before returning to factory
-maintenance:
-
-```sh
-rm -rf server/src/ModularTemplate.Persistence/Migrations
-```
-
 ## 3. Test The Local Packed CLI
 
 From the factory root:
 
 ```sh
-rm -rf template/server/src/ModularTemplate.Persistence/Migrations
 mkdir -p /tmp/dotnet-modular-react-template-pack
 pnpm pack --pack-destination /tmp/dotnet-modular-react-template-pack
 
@@ -103,8 +83,8 @@ pnpm install --frozen-lockfile
 pnpm verify
 ```
 
-Then repeat the initial migration and Aspire startup from section 2, using the
-renamed solution and project paths generated for `Smoke Desk`.
+Then repeat the Aspire startup from section 2, using the renamed solution and
+project paths generated for `Smoke Desk`.
 
 Expected:
 
@@ -112,6 +92,8 @@ Expected:
   `template/`.
 - Names are rewritten to `SmokeDesk`, `smoke-desk`, and `smoke_desk`.
 - Product CI, Husky hooks, VS Code/Aspire config, and docs are present.
+- The baseline `InitialCreate` EF migration is renamed for the generated
+  product and present under its Persistence project.
 - Pre-populated OpenSpec artifacts are absent.
 - Factory-only docs and packaging files are absent.
 - The generated product starts locally from Aspire.
@@ -141,14 +123,14 @@ pnpm install --frozen-lockfile
 pnpm verify
 ```
 
-Then create the initial EF migration and start Aspire as in section 2.
+Then start Aspire as in section 2.
 
 Expected:
 
 - `pnpm dlx dotnet-modular-react-template` resolves from npm.
 - The generated repository behaves the same as the local packed CLI output.
-- Verify, migration creation, Aspire startup, auth smoke, hooks, and inherited
-  CI files all work.
+- Verify, baseline migration application, Aspire startup, auth smoke, hooks,
+  and inherited CI files all work.
 
 ## 5. Release Decision
 
@@ -158,5 +140,5 @@ Ship v1 only after these pass:
 - Template payload runs locally from Aspire.
 - Local packed CLI creates a working product.
 - Published npm package creates a working product from a separate directory.
-- Any generated EF migration used during testing is intentionally removed from
-  the factory payload before release.
+- The baseline EF migration is intentionally present in the factory payload
+  before release.

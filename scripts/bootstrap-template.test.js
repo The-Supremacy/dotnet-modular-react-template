@@ -4,9 +4,9 @@ import { execFile } from "node:child_process";
 import {
   mkdir,
   mkdtemp,
+  readdir,
   readFile,
   rm,
-  stat,
   writeFile,
 } from "node:fs/promises";
 import os from "node:os";
@@ -95,7 +95,7 @@ test("keeps manifest text and ignore rules focused on bootstrap inputs", () => {
         "20260507204301_InitialCreate.cs",
       ),
     ),
-    true,
+    false,
   );
 });
 
@@ -206,11 +206,22 @@ test("bootstraps a generated sample with renamed manifests and product CI files"
     assert.equal(packageJson.name, "north-star");
     assert.match(workflow, /dotnet restore NorthStar\.slnx/);
     assert.doesNotMatch(gitignore, /Persistence\/Migrations\//);
-    await assert.rejects(readFile(path.join(outputRoot, "README.md")), {
-      code: "ENOENT",
-    });
-    await assert.rejects(
-      stat(
+    assert.equal(
+      await readFile(
+        path.join(
+          outputRoot,
+          "server",
+          "src",
+          "NorthStar.Persistence",
+          "Migrations",
+          "NorthStarDbContextModelSnapshot.cs",
+        ),
+        "utf8",
+      ).then((content) => content.includes("NorthStar.Persistence.Migrations")),
+      true,
+    );
+    assert.equal(
+      await readdir(
         path.join(
           outputRoot,
           "server",
@@ -218,9 +229,14 @@ test("bootstraps a generated sample with renamed manifests and product CI files"
           "NorthStar.Persistence",
           "Migrations",
         ),
+      ).then((entries) =>
+        entries.some((entry) => /^\d{14}_InitialCreate\.cs$/.test(entry)),
       ),
-      { code: "ENOENT" },
+      true,
     );
+    await assert.rejects(readFile(path.join(outputRoot, "README.md")), {
+      code: "ENOENT",
+    });
     assert.equal(
       await readFile(path.join(outputRoot, "NorthStar.slnx"), "utf8").then(
         () => true,

@@ -70,11 +70,7 @@ async function assertPackExcludesGeneratedArtifacts(tarballPath) {
     (entry) =>
       /package\/template\/(?:.*\/)?(?:\.pnpm-store|bin|coverage|dist|node_modules|obj|playwright-report|test-results)\//.test(
         entry,
-      ) ||
-      entry.startsWith("package/template/.husky/_/") ||
-      entry.startsWith(
-        "package/template/server/src/ModularTemplate.Persistence/Migrations/",
-      ),
+      ) || entry.startsWith("package/template/.husky/_/"),
   );
 
   assert.deepEqual(forbiddenEntries, []);
@@ -128,17 +124,15 @@ test("packed CLI bootstraps a product from the published payload", async () => {
     });
     await stat(path.join(outputRoot, "PackageDesk.slnx"));
     await stat(path.join(outputRoot, ".github", "workflows", "verify.yml"));
-    await assert.rejects(
-      stat(
-        path.join(
-          outputRoot,
-          "server",
-          "src",
-          "PackageDesk.Persistence",
-          "Migrations",
-        ),
+    await stat(
+      path.join(
+        outputRoot,
+        "server",
+        "src",
+        "PackageDesk.Persistence",
+        "Migrations",
+        "PackageDeskDbContextModelSnapshot.cs",
       ),
-      { code: "ENOENT" },
     );
   });
 });

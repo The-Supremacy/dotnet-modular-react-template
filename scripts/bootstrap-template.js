@@ -53,11 +53,7 @@ const manifest = {
     "playwright-report",
     "test-results",
   ],
-  ignoredRelativePaths: [
-    ".husky/_",
-    ".npmignore",
-    "server/src/ModularTemplate.Persistence/Migrations",
-  ],
+  ignoredRelativePaths: [".husky/_", ".npmignore"],
   placeholders(names) {
     return [
       ["@modular-template", names.npmScope],

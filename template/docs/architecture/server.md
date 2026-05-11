@@ -18,8 +18,9 @@ Current direction:
 - `ModularTemplateDbContext` implements narrow module persistence interfaces,
   including the Identity persistence surface for local users and application
   access.
-- The Migrator references the persistence project. The template does not
-  include generated EF migrations.
+- The Migrator references the persistence project. The template includes only
+  the intentional baseline `InitialCreate` EF migration; product-owned schema
+  changes should add product-owned migrations after bootstrap.
 - SharedKernel contains only domain primitives at this gate: entity,
   aggregate-root, value-object, domain-event, and domain-exception base types.
 - Domain events are persisted by the shared DbContext into

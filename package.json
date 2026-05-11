@@ -26,8 +26,7 @@
     "!template/**/obj/**",
     "!template/**/playwright-report/**",
     "!template/**/test-results/**",
-    "!template/.husky/_/**",
-    "!template/server/src/ModularTemplate.Persistence/Migrations/**"
+    "!template/.husky/_/**"
   ],
   "keywords": [
     "dotnet",
