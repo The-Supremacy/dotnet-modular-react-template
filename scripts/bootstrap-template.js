@@ -280,23 +280,6 @@ async function validateExistingOutputRoot(outputRoot) {
   if (!outputStat.isDirectory()) {
     throw new Error(`Existing output path must be a directory: ${outputRoot}`);
   }
-
-  const readme = `# ${names.slug}
-
-${names.display} product repository bootstrapped from the .NET + React modular-monolith template.
-
-Substantial runtime behavior starts from product-owned feature artifacts or
-durable architecture decisions. Stable governance, architecture, platform,
-testing, and module guidance lives under \`docs/\`.
-
-Start with:
-
-- [docs/README.md](docs/README.md) for stable documentation.
-- [docs/governance.md](docs/governance.md) for hard project rules.
-- [docs/openspec.md](docs/openspec.md) for optional OpenSpec setup guidance.
-`;
-
-  await writeFile(readmePath, readme, "utf8");
 }
 
 async function rewriteFiles(outputRoot, mappings) {
