@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/The-Supremacy/dotnet-modular-react-template/compare/dotnet-modular-react-template-v1.0.8...dotnet-modular-react-template-v1.0.9) (2026-05-11)
+
+
+### Bug Fixes
+
+* changes for generated namespaces names ([#17](https://github.com/The-Supremacy/dotnet-modular-react-template/issues/17)) ([c039064](https://github.com/The-Supremacy/dotnet-modular-react-template/commit/c039064f74f464689510c122e473ea7a7bcd2eb3))
+
 ## [1.0.8](https://github.com/The-Supremacy/dotnet-modular-react-template/compare/dotnet-modular-react-template-v1.0.7...dotnet-modular-react-template-v1.0.8) (2026-05-11)
 
 
