@@ -55,6 +55,7 @@
     "format:check": "prettier --check .",
     "prepack": "pnpm exec node scripts/clean-template-artifacts.js",
     "prepare": "husky",
+    "security:audit": "pnpm audit --audit-level low",
     "scripts:lint": "eslint scripts --max-warnings 0",
     "scripts:test": "pnpm exec node --test scripts/*.test.js",
     "template:bootstrap": "pnpm exec node scripts/bootstrap-template.js",

@@ -5,7 +5,34 @@ updates:
     schedule:
       interval: "weekly"
 
+  - package-ecosystem: "npm"
+    directory: "/template"
+    schedule:
+      interval: "weekly"
+    groups:
+      template-npm-dependencies:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "nuget"
+    directory: "/template"
+    schedule:
+      interval: "weekly"
+    groups:
+      template-nuget-dependencies:
+        patterns:
+          - "*"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/template"
+    schedule:
+      interval: "weekly"
+    groups:
+      template-github-actions:
+        patterns:
+          - "*"
