@@ -32,7 +32,9 @@ Current direction:
   shared persistence registration.
 - Host composes minimal API authentication, the `GET /api/me` current-user
   endpoint, and an application-access authorization policy while Identity owns
-  local identity and access decisions behind contracts.
+  local identity and access decisions behind contracts. The Host does not grant
+  bootstrap authorization during web startup; initial admin setup belongs to
+  Migrator or other explicit setup tooling.
 - Host registers ASP.NET Core OpenAPI metadata for template-owned `/api/`
   endpoints. Build-time OpenAPI generation writes the checked-in client source
   document used by the frontend API client package.

@@ -29,6 +29,9 @@ they have real system behavior to specify.
   Redis-backed server-side authentication tickets.
 - Treat Keycloak as a local OIDC provider, not an application authorization
   source.
+- Keep initial admin/application-access setup as an explicit Migrator/setup
+  operation, not a Host startup hosted service. Re-running setup is idempotent
+  for active access and must not silently reactivate revoked access.
 - Use Aspire as the local platform entrypoint.
 - Start with separate `admin` and `web` React/Vite apps.
 - Keep browser auth helpers in `web/packages/auth`; browser code must use

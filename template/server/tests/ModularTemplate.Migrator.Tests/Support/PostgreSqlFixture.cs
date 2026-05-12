@@ -2,7 +2,7 @@ using Testcontainers.PostgreSql;
 
 using ModularTemplate.Tests.Support;
 
-namespace ModularTemplate.Identity.Infrastructure.Tests.Support;
+namespace ModularTemplate.Migrator.Tests.Support;
 
 public sealed class PostgreSqlFixture : IAsyncLifetime
 {
@@ -13,7 +13,7 @@ public sealed class PostgreSqlFixture : IAsyncLifetime
         ContainerRuntimeDefaults.Apply();
 
         _container = new PostgreSqlBuilder("docker.io/library/postgres:17-alpine")
-            .WithDatabase("modular_template_tests")
+            .WithDatabase("modular_template_migrator_tests")
             .WithUsername("postgres")
             .WithPassword("postgres")
             .Build();

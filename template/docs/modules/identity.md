@@ -9,7 +9,7 @@ Identity owns:
 - Lazy local user creation after successful authentication.
 - Application-owned application access aggregates.
 - Current-user context contracts.
-- Initial application access bootstrap behavior.
+- Initial admin access grant behavior used by setup tooling.
 
 The Host owns OIDC challenge/callback/logout mechanics, cookie configuration,
 Redis-backed session ticket storage, and API authentication behavior.
@@ -28,9 +28,10 @@ subject)`.
 
 Application access is represented by active application-owned access state.
 Missing or inactive access means the user is authenticated without product
-access; they do not become unauthenticated. A minimal bootstrapper can grant one
-configured provider/subject pair active application access and is intentionally
-idempotent.
+access; they do not become unauthenticated. A setup command can grant one
+configured provider/subject pair active initial admin/application access. It is
+idempotent when access is already active and refuses to silently reactivate
+revoked access unless the caller explicitly forces the operation.
 
 The Host owns claim parsing. Identity current-user behavior consumes a
 provider-neutral authenticated identity value and resolves local user plus

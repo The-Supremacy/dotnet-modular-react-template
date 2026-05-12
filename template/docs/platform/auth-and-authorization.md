@@ -17,7 +17,12 @@ Identity module responsibilities:
 - Translate authenticated OIDC principals into local user identities.
 - Store app-owned authorization records.
 - Provide current-user context.
-- Bootstrap one initial application admin.
+- Provide command-side behavior for granting one initial application admin.
+
+Migrator responsibilities:
+
+- Apply Host-owned database migrations.
+- Run explicit initial-admin setup when configured or invoked by command.
 
 The identity provider proves identity. The application decides product access.
 
@@ -37,6 +42,11 @@ by Identity contracts.
 API authentication failures return `401` without browser redirects. API
 authorization failures for authenticated users without active application-owned
 access return `403`.
+
+Initial admin setup is not a Host startup side effect. The Migrator can grant
+one configured `(provider, subject)` pair app-owned admin/application access
+after migrations. The operation is idempotent while access is active, but it
+does not reactivate revoked access unless explicitly forced.
 
 Custom request-header authentication is not production authentication. It exists
 only in backend tests as temporary verification scaffolding. It must not be
@@ -58,6 +68,8 @@ The development defaults are:
 - Callback route: `/auth/callback`
 - Signed-out callback route: `/auth/signed-out`
 - Redis connection string key: `ConnectionStrings:session-tickets`
+- Initial admin config: `Identity:InitialAdmin:Provider` and
+  `Identity:InitialAdmin:Subject`
 
 Identity-provider roles, groups, organizations, and provider-specific
 authorization claims are not authoritative for product authorization.

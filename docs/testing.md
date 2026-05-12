@@ -57,7 +57,8 @@ ASPIRE_CONTAINER_RUNTIME=${ASPIRE_CONTAINER_RUNTIME:-docker} \
 Expected:
 
 - PostgreSQL, Redis, Keycloak, Migrator, Host, Admin, and Web resources start.
-- Migrator applies the checked-in baseline migration.
+- Migrator applies the checked-in baseline migration and grants the local
+  Keycloak smoke admin through `Identity:InitialAdmin`.
 - Admin and Web apps load.
 - Browser auth smoke works with:
   - `admin@example.test` / `Password123!`

@@ -3,30 +3,41 @@ using ModularTemplate.Identity.Users;
 
 namespace ModularTemplate.Identity.Access;
 
-public sealed class InitialApplicationAccessOptions
+public sealed class InitialAdminOptions
 {
     public string? Provider { get; init; }
 
     public string? Subject { get; init; }
+
+    public bool Force { get; init; }
 }
 
-public sealed record GrantInitialApplicationAccessCommand(
+public sealed record GrantInitialAdminAccessCommand(
     string? Provider,
-    string? Subject) : ICommand<bool>;
+    string? Subject,
+    bool Force) : ICommand<GrantInitialAdminAccessResult>;
 
-public sealed class GrantInitialApplicationAccessCommandHandler(
+public enum GrantInitialAdminAccessResult
+{
+    Skipped,
+    Granted,
+    AlreadyGranted,
+    RevokedRequiresForce
+}
+
+public sealed class GrantInitialAdminAccessCommandHandler(
     ILocalUserRepository localUserRepository,
     IApplicationAccessRepository applicationAccessRepository)
-    : ICommandHandler<GrantInitialApplicationAccessCommand, bool>
+    : ICommandHandler<GrantInitialAdminAccessCommand, GrantInitialAdminAccessResult>
 {
-    public async ValueTask<bool> Handle(
-        GrantInitialApplicationAccessCommand command,
+    public async ValueTask<GrantInitialAdminAccessResult> Handle(
+        GrantInitialAdminAccessCommand command,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(command.Provider)
             || string.IsNullOrWhiteSpace(command.Subject))
         {
-            return false;
+            return GrantInitialAdminAccessResult.Skipped;
         }
 
         LocalUser? user = await localUserRepository.GetByProviderSubjectAsync(
@@ -47,10 +58,20 @@ public sealed class GrantInitialApplicationAccessCommandHandler(
         if (access is null)
         {
             applicationAccessRepository.Add(ApplicationAccess.GrantTo(user.Id));
-            return true;
+            return GrantInitialAdminAccessResult.Granted;
+        }
+
+        if (access.IsActive)
+        {
+            return GrantInitialAdminAccessResult.AlreadyGranted;
+        }
+
+        if (!command.Force)
+        {
+            return GrantInitialAdminAccessResult.RevokedRequiresForce;
         }
 
         access.Grant();
-        return true;
+        return GrantInitialAdminAccessResult.Granted;
     }
 }

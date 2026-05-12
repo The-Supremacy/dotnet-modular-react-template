@@ -45,6 +45,10 @@ export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/podman/podman.sock"
 export TESTCONTAINERS_RYUK_DISABLED=true
 ```
 
+The checked-in integration test fixtures also detect the standard rootless
+Podman socket when `DOCKER_HOST` is unset. This keeps VS Code test runs working
+when the editor was launched from the desktop and did not inherit shell exports.
+
 `TESTCONTAINERS_RYUK_DISABLED=true` is commonly needed with rootless Podman. If
 a test run is interrupted, use `podman ps -a` to find and remove leftover test
 containers.
@@ -65,7 +69,7 @@ The checked-in Keycloak realm import includes local users for browser smoke
 testing:
 
 - `admin@example.test` / `Password123!` has initial application access through
-  the AppHost-provided bootstrap subject.
+  the AppHost-provided Migrator initial-admin setup subject.
 - `user@example.test` / `Password123!` can authenticate without application
   access.
 
@@ -76,7 +80,10 @@ directly from browser code.
 
 The Migrator runs `ModularTemplateDbContext` migrations during Aspire startup.
 Generated repositories include a baseline `InitialCreate` migration so the
-local platform can create the first Host-owned schema on a fresh database.
+local platform can create the first Host-owned schema on a fresh database. The
+AppHost also passes `Identity:InitialAdmin` settings to the Migrator so the
+local Keycloak smoke admin receives app-owned access without the Host mutating
+authorization state during web startup.
 
 ## Browser Session Smoke
 

@@ -12,7 +12,7 @@ Start with:
 - [docs/template-decisions.md](docs/template-decisions.md) for durable template
   factory decisions.
 - [docs/release-readiness.md](docs/release-readiness.md) and
-  [docs/to_test.md](docs/to_test.md) for release validation context.
+  [docs/testing.md](docs/testing.md) for release validation context.
 - [scripts/README.md](scripts/README.md) before changing bootstrap or
   verification automation.
 - [template/AGENTS.md](template/AGENTS.md) before changing generated-product

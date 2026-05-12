@@ -17,6 +17,7 @@
   </Folder>
   <Folder Name="/server/tests/">
     <Project Path="server/tests/ModularTemplate.Host.Tests/ModularTemplate.Host.Tests.csproj" />
+    <Project Path="server/tests/ModularTemplate.Migrator.Tests/ModularTemplate.Migrator.Tests.csproj" />
   </Folder>
   <Folder Name="/server/tests/modules/">
     <Project Path="server/tests/modules/ModularTemplate.Identity.Infrastructure.Tests/ModularTemplate.Identity.Infrastructure.Tests.csproj" />

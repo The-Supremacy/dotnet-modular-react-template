@@ -3,9 +3,7 @@ using ModularTemplate.Host.Configuration;
 using ModularTemplate.Host.Authorization;
 using ModularTemplate.Host.Features.Auth;
 using ModularTemplate.Host.Features.CurrentUser;
-using ModularTemplate.Host.HostedServices;
 using ModularTemplate.Identity;
-using ModularTemplate.Identity.Access;
 using ModularTemplate.Identity.CurrentUser;
 using ModularTemplate.Identity.Infrastructure;
 using ModularTemplate.Identity.Infrastructure.Persistence;
@@ -32,10 +30,6 @@ builder.Services.AddMediator(options =>
         typeof(CommandTransactionBehavior<,>)
     ];
 });
-builder.Services
-    .AddOptions<InitialApplicationAccessOptions>()
-    .BindConfiguration("Identity:InitialApplicationAccess");
-builder.Services.AddHostedService<InitialApplicationAccessHostedService>();
 builder.Services.AddIdentityModule();
 builder.Services.AddIdentityInfrastructure();
 builder.Services.AddApplicationAccessAuthorization();

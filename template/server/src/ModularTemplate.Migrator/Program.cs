@@ -1,16 +1,17 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ModularTemplate.Persistence;
-using ModularTemplate.Persistence.Configuration;
+using ModularTemplate.Migrator;
 using ModularTemplate.ServiceDefaults;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.AddServiceDefaults();
-builder.AddPersistence();
+builder.AddMigratorComposition();
 
 using IHost host = builder.Build();
-using IServiceScope scope = host.Services.CreateScope();
 
-ModularTemplateDbContext dbContext = scope.ServiceProvider.GetRequiredService<ModularTemplateDbContext>();
-await dbContext.Database.MigrateAsync();
+return await MigratorRunner.RunAsync(
+    args,
+    builder.Configuration,
+    host.Services,
+    Console.Out,
+    Console.Error,
+    CancellationToken.None);
