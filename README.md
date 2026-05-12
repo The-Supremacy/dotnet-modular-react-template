@@ -58,4 +58,13 @@ Useful maintenance commands:
 - `pnpm template:verify`
 - `pnpm template:verify:full`
 
-Factory planning and release-readiness notes live under `docs/`.
+Factory maintenance documentation lives under `docs/`:
+
+- `docs/README.md` indexes factory-maintainer docs.
+- `docs/template-decisions.md` records durable template-factory decisions.
+- `docs/testing.md` records release and bootstrap validation steps.
+
+Generated-product documentation lives under `template/docs/`; generated-product
+agent and OpenSpec context starts at `template/AGENTS.md`,
+`template/docs/governance.md`, `template/docs/openspec.md`, and
+`template/openspec/config.yaml`.

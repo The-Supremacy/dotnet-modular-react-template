@@ -11,8 +11,8 @@ Start with:
 - [docs/README.md](docs/README.md) for factory maintainer documentation.
 - [docs/template-decisions.md](docs/template-decisions.md) for durable template
   factory decisions.
-- [docs/release-readiness.md](docs/release-readiness.md) and
-  [docs/testing.md](docs/testing.md) for release validation context.
+- [docs/testing.md](docs/testing.md) for release validation and bootstrap
+  testing context.
 - [scripts/README.md](scripts/README.md) before changing bootstrap or
   verification automation.
 - [template/AGENTS.md](template/AGENTS.md) before changing generated-product
@@ -83,8 +83,9 @@ When editing rename or placeholder behavior, update or add focused coverage in
 ## Generated Product Rules
 
 Before adding substantial runtime behavior under `template/`, read
-`template/docs/governance.md`, the relevant stable docs in `template/docs/`,
-and current specs in `template/openspec/specs/`.
+`template/docs/governance.md`, `template/docs/openspec.md`,
+`template/openspec/config.yaml`, the relevant stable docs in `template/docs/`,
+and any current specs or changes under `template/openspec/` when present.
 
 Do not add domain behavior, auth/session plumbing, migrations, frontend apps,
 or orchestration resources unless accepted specs or durable decisions define

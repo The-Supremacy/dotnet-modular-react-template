@@ -8,8 +8,10 @@ context: |
 
   Durable project knowledge belongs in versioned repository files:
   - Stable architecture and platform rules live under docs/.
-  - Accepted feature behavior lives under openspec/specs/.
-  - Active proposed behavior lives under openspec/changes/.
+  - Accepted feature behavior lives under openspec/specs/ after a product
+    initializes OpenSpec.
+  - Active proposed behavior lives under openspec/changes/ after a product
+    initializes OpenSpec.
 
   Before proposing or implementing substantial runtime behavior, read:
   - docs/governance.md
@@ -18,7 +20,7 @@ context: |
   - relevant docs/architecture/*.md files
   - relevant docs/platform/*.md files
   - docs/testing.md and relevant docs/testing/*.md files
-  - existing specs under openspec/specs/
+  - existing specs under openspec/specs/ when present
 
   Canonical stack and conventions:
   - Backend: .NET modular monolith, ASP.NET Core Minimal APIs, EF Core,
@@ -61,7 +63,7 @@ rules:
   design:
     - Reference the stable docs that govern the design instead of duplicating long architecture guidance.
     - Define module boundaries, ownership, and dependency direction for backend behavior.
-    - Keep CommandDeck product state separate from framework-owned or execution-local state.
+    - Keep product-owned state separate from framework-owned or execution-local state.
     - Specify which decisions are deterministic and which are LLM-assisted when AI behavior is involved.
     - Describe persistence, migration, rollback, observability, and verification implications when relevant.
     - Include alternatives considered for important architecture choices.

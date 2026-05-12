@@ -7,8 +7,9 @@ Generated-product documentation lives under `template/docs/`.
 
 - [template-decisions.md](template-decisions.md) records factory decisions that
   should not become product ADR history.
-- [identity-initial-admin-setup-plan.md](identity-initial-admin-setup-plan.md)
-  records the implementation and transfer plan for explicit initial-admin
-  setup.
-- [release-readiness.md](release-readiness.md) tracks release and
-  bootstrap-population planning.
+- [testing.md](testing.md) records release validation, packed-CLI testing, npm
+  publication checks, and generated-product smoke expectations.
+
+Historical or in-progress planning notes may live here when they are useful for
+factory maintenance, but stable generated-product rules belong under
+`template/docs/`.

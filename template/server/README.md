@@ -19,4 +19,6 @@ and the initial Identity module boundary.
 
 `ModularTemplate.Persistence` contains the concrete EF Core DbContext shell.
 `ModularTemplate.Migrator` is the Host-owned migration entrypoint. The template
-does not include generated EF migrations.
+includes the intentional baseline `InitialCreate` migration so generated
+products can create the first local schema; product-owned schema changes should
+add product-owned migrations after bootstrap.

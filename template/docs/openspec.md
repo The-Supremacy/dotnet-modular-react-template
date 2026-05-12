@@ -22,7 +22,8 @@ architecture decision that states the scope.
    [setup-openspec.sh](../scripts/setup-openspec.sh).
 2. Initialize OpenSpec in the product repository with Codex support:
    `openspec init --tools codex .`.
-3. Read [governance.md](governance.md) and relevant stable docs.
+3. Read [governance.md](governance.md), relevant stable docs, and
+   `../openspec/config.yaml`.
 4. Create a change with `openspec new change <name>`.
 5. Write `proposal.md`, behavior capability specs under `specs/`, `design.md`
    when the change is cross-cutting, and `tasks.md`.
