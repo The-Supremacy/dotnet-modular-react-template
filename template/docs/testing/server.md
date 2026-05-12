@@ -17,6 +17,17 @@ Expected categories:
 - `Integration`
 - `Eval`
 
+Backend test method names should use PascalCase scenario segments separated by
+underscores:
+
+```csharp
+public async Task Endpoint_WhenCondition_ReturnsExpectedResult()
+```
+
+Use the first segment for the behavior or API under test, the middle segment
+for the relevant condition, and the final segment for the observable outcome.
+Prefer this shape for new tests instead of sentence-style names.
+
 Integration tests should use real IO through Testcontainers rather than an
 in-memory persistence stack.
 

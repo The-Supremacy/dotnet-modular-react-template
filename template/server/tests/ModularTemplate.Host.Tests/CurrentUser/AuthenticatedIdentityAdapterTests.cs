@@ -8,7 +8,7 @@ public sealed class AuthenticatedIdentityAdapterTests
 {
     [Fact]
     [Trait("Category", "Application")]
-    public void FromClaimsPrincipal_uses_explicit_provider_claim()
+    public void FromClaimsPrincipal_WhenProviderClaimExists_UsesExplicitProviderClaim()
     {
         var principal = CreatePrincipal(
             new Claim("provider", "http://localhost:8080/realms/modular-template"),
@@ -24,7 +24,7 @@ public sealed class AuthenticatedIdentityAdapterTests
 
     [Fact]
     [Trait("Category", "Application")]
-    public void FromClaimsPrincipal_returns_null_when_provider_is_missing()
+    public void FromClaimsPrincipal_WhenProviderIsMissing_ReturnsNull()
     {
         var principal = CreatePrincipal(new Claim(ClaimTypes.NameIdentifier, "subject-1"));
 
