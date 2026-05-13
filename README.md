@@ -67,4 +67,5 @@ Factory maintenance documentation lives under `docs/`:
 Generated-product documentation lives under `template/docs/`; generated-product
 agent and OpenSpec context starts at `template/AGENTS.md`,
 `template/docs/governance.md`, `template/docs/openspec.md`, and
-`template/openspec/config.yaml`.
+`template/openspec/config.yaml`. Generated-product implementation progress is
+indexed under `template/docs/current-state/`.

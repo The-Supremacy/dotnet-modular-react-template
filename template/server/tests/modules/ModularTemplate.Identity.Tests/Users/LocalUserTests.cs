@@ -10,8 +10,11 @@ public sealed class LocalUserTests
     [Trait("Category", "Unit")]
     public void Create_WhenIdentityIsValid_RecordsCreatedEvent()
     {
-        LocalUser user = LocalUser.Create("oidc", "subject-1", "Ada", "ada@example.test");
+        LocalUser user = LocalUser.Create(" oidc ", " subject-1 ", " Ada ", "ada@example.test");
 
+        user.Provider.ShouldBe("oidc");
+        user.Subject.ShouldBe("subject-1");
+        user.DisplayName.ShouldBe("Ada");
         user.Email!.Value.ShouldBe("ada@example.test");
         user.DomainEvents.Single().ShouldBeOfType<LocalUserCreatedDomainEvent>();
     }
@@ -35,7 +38,7 @@ public sealed class LocalUserTests
         LocalUser user = LocalUser.Create("oidc", "subject-1", "Ada", "ada@example.test");
         user.ClearDomainEvents();
 
-        user.MarkSeen("Ada Lovelace", "ada.lovelace@example.test");
+        user.MarkSeen(" Ada Lovelace ", "ada.lovelace@example.test");
 
         user.DisplayName.ShouldBe("Ada Lovelace");
         user.Email!.Value.ShouldBe("ada.lovelace@example.test");

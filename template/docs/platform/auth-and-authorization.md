@@ -26,38 +26,13 @@ Migrator responsibilities:
 
 The identity provider proves identity. The application decides product access.
 
-## Current Implementation Slice
-
-The template includes Host-owned OIDC and cookie authentication for browser
-sessions. The Host uses the application cookie as the local session scheme and
-OpenID Connect as the login/sign-out challenge scheme. Authentication ticket
-state is stored server-side in Redis through a minimal Host-owned ticket store,
-so browser code receives only an opaque application session cookie.
-
-The Host resolves a request principal, maps it to a provider-neutral
-authenticated identity value, requires authentication for the current-user
-endpoint, and exposes application-access authorization as a Host policy backed
-by Identity contracts.
-
-During OIDC token validation, the Host normalizes the authenticated provider to
-the configured `Authentication:Oidc:Authority` and stores it in the local
-session as a `provider` claim. Current-user resolution uses that provider plus
-the stable subject claim so local user records match Migrator initial-admin
-configuration even when provider token claim sets differ.
-
-API authentication failures return `401` without browser redirects. API
-authorization failures for authenticated users without active application-owned
-access return `403`.
-
-Initial admin setup is not a Host startup side effect. The Migrator can grant
-one configured `(provider, subject)` pair app-owned admin/application access
-after migrations. The operation is idempotent while access is active, but it
-does not reactivate revoked access unless explicitly forced.
-
 Custom request-header authentication is not production authentication. It exists
 only in backend tests as temporary verification scaffolding. It must not be
 wired into production Host composition, emitted as response state, or used as a
 replacement for calling `GET /api/me`.
+
+Implementation progress for the shipped template lives in
+[../current-state/platform.md](../current-state/platform.md).
 
 ## Local OIDC Defaults
 

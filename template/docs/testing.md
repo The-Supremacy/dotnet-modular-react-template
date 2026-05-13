@@ -10,7 +10,7 @@ Area details:
 - [E2E testing](testing/e2e.md)
 - [Eval testing](testing/eval.md)
 
-Current validation entrypoints:
+Validation entrypoints:
 
 - `dotnet restore ModularTemplate.slnx`
 - `dotnet build ModularTemplate.slnx --configuration Release --no-restore`

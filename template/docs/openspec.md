@@ -32,7 +32,7 @@ architecture decision that states the scope.
 8. Archive accepted changes with `openspec archive <change-name> --yes` so
    current behavior is merged into `openspec/specs/`.
 
-## Current Specs
+## Accepted Specs
 
 The template intentionally does not ship pre-populated OpenSpec specs or
 archived changes. Once a product initializes OpenSpec, accepted behavior should

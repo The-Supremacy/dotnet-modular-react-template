@@ -11,22 +11,10 @@ Expected local resources include:
 - Keycloak for local OIDC authentication
 - Vite frontend apps for the admin and web portals
 
-Orchestration lives under the top-level `orchestration/` folder.
+Orchestration lives under the top-level `orchestration/` folder. App host
+composition should keep service dependencies explicit, pass frontend apps only
+same-origin Host endpoints, and preserve the Host-owned BFF session boundary.
 
-The current Aspire app host is
-`orchestration/ModularTemplate.Orchestration/ModularTemplate.Orchestration.csproj`.
-It defines PostgreSQL, Redis, Keycloak, Migrator, Host, admin frontend, and web
-frontend resources. The Host waits for the Migrator to complete before starting,
-and the frontend resources receive the Host HTTP endpoint through
-`VITE_HOST_ORIGIN` for local `/api/` and `/auth/` proxying.
-
-The admin and web frontend resources expose the initial browser-session smoke
-surface. It verifies login, current-user loading, application-access state, and
-POST logout through same-origin frontend routes while preserving the Host-owned
-BFF session boundary.
-
-Keycloak uses a checked-in realm import JSON for deterministic local OIDC
-client configuration and local smoke-test users. PostgreSQL, Redis, and
-Keycloak use named local data volumes so repeated Aspire starts preserve useful
-development state; delete those volumes when a clean local platform reset is
-needed.
+Local identity-provider configuration should be deterministic and checked in
+when products rely on local login smoke tests. Stateful local resources may use
+named data volumes, but docs must explain how to reset them.

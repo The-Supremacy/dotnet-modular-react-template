@@ -24,6 +24,26 @@ generated API clients.
   `VITE_HOST_ORIGIN` to override the default Host target of
   `http://localhost:5162`.
 
+## UI Composition
+
+Product UI should use a shared component package, preferably
+`web/packages/ui`, before duplicating app-local components or one-off styles.
+Use Tailwind tokens and shadcn-style component conventions consistently across
+apps. App packages may own route composition and product-specific screens, but
+shared controls, layout primitives, form fields, overlays, and visual tokens
+belong in the shared package once they are reused or expected to stay visually
+consistent.
+
+Design responsive layouts from the first implementation. Do not treat mobile,
+tablet, keyboard navigation, or dense desktop states as follow-up work for
+shared UI primitives.
+
+Light and dark mode should default to the operating-system color-scheme
+preference. Add an explicit app preference only when the product experience
+needs one. Avoid app-local color palettes, handwritten CSS components, and
+route-specific style overrides unless the product artifact documents why the
+shared system cannot express the need.
+
 ## Generated API Clients
 
 Refresh the Host OpenAPI document and frontend generated client with:
@@ -46,8 +66,8 @@ payloads.
 The local pre-commit hook and default CI workflow run `pnpm api-client:check`
 so OpenAPI/client drift is caught before merge.
 
-Hey API also supports TanStack Query generation. The template currently
-generates SDK/types only and keeps app-facing query composition in
+Hey API also supports TanStack Query generation. The template generates
+SDK/types only and keeps app-facing query composition in
 `web/packages/auth`. The generated-client configuration does not enable the
 TanStack Query plugin:
 

@@ -6,7 +6,7 @@ Shared frontend packages should include focused tests for auth helpers, route
 guards, generated API client behavior, and reusable UI behavior once those
 packages exist.
 
-Current frontend validation entrypoints:
+Frontend validation entrypoints:
 
 - `pnpm api-client:check`
 - `pnpm frontend:typecheck`

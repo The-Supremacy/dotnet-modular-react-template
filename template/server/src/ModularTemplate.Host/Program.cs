@@ -1,14 +1,8 @@
-using Mediator;
 using ModularTemplate.Host.Configuration;
 using ModularTemplate.Host.Authorization;
 using ModularTemplate.Host.Features.Auth;
 using ModularTemplate.Host.Features.CurrentUser;
-using ModularTemplate.Identity;
-using ModularTemplate.Identity.CurrentUser;
-using ModularTemplate.Identity.Infrastructure;
-using ModularTemplate.Identity.Infrastructure.Persistence;
 using ModularTemplate.Persistence.Configuration;
-using ModularTemplate.Persistence.Transactions;
 using ModularTemplate.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,21 +11,7 @@ builder.AddPersistence();
 builder.AddHostAuthentication();
 builder.AddProblemDetails();
 builder.Services.AddOpenApi();
-builder.Services.AddMediator(options =>
-{
-    options.ServiceLifetime = ServiceLifetime.Scoped;
-    options.Assemblies =
-    [
-        typeof(ResolveCurrentUserCommand).Assembly,
-        typeof(ApplicationAccessRepository).Assembly
-    ];
-    options.PipelineBehaviors =
-    [
-        typeof(CommandTransactionBehavior<,>)
-    ];
-});
-builder.Services.AddIdentityModule();
-builder.Services.AddIdentityInfrastructure();
+builder.Services.AddConfiguredModules();
 builder.Services.AddApplicationAccessAuthorization();
 
 var app = builder.Build();

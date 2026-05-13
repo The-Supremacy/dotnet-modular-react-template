@@ -1,6 +1,6 @@
 # Local Services
 
-The template's current local platform uses Aspire and includes:
+The template's local platform uses Aspire and includes:
 
 - PostgreSQL for the Host-owned database.
 - Redis for BFF/session ticket storage.
@@ -10,7 +10,7 @@ The template's current local platform uses Aspire and includes:
 - Admin Vite app.
 - Web Vite app.
 
-Mailpit is not part of the current local orchestration topology.
+Mailpit is not part of the default local orchestration topology.
 
 ## Startup
 

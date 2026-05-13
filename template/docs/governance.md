@@ -26,6 +26,10 @@ scope.
 Durable project knowledge MUST live in versioned repository files. Stable
 architecture rules belong under `docs/`. Agent instructions MAY summarize or
 route to those files, but MUST NOT be the only source of an important rule.
+Stable architecture and product docs MUST describe durable intent, rules, and
+decision boundaries instead of transient implementation status. Implementation
+progress MUST be tracked under `docs/current-state/` or product-owned feature
+artifacts.
 
 ### IV. Explicit Modular-Monolith Boundaries
 
@@ -34,6 +38,9 @@ MUST NOT expose EF entities, aggregate internals, provider SDK types, or
 infrastructure details. Module implementations MUST NOT use another module's
 DbSet surface directly. Host composition MAY wire modules together, but
 business behavior MUST stay in module-owned contracts and feature slices.
+Aggregates MUST own domain transitions and raise relevant domain events.
+Command-side repositories MUST represent domain persistence, while query
+handlers and read models MUST represent provider-neutral projections.
 
 ### V. Verification Scales With Risk
 
