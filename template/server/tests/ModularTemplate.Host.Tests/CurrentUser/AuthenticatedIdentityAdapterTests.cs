@@ -7,7 +7,7 @@ namespace ModularTemplate.Host.Tests.CurrentUser;
 public sealed class AuthenticatedIdentityAdapterTests
 {
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public void FromClaimsPrincipal_WhenProviderClaimExists_UsesExplicitProviderClaim()
     {
         var principal = CreatePrincipal(
@@ -23,7 +23,7 @@ public sealed class AuthenticatedIdentityAdapterTests
     }
 
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public void FromClaimsPrincipal_WhenProviderIsMissing_ReturnsNull()
     {
         var principal = CreatePrincipal(new Claim(ClaimTypes.NameIdentifier, "subject-1"));

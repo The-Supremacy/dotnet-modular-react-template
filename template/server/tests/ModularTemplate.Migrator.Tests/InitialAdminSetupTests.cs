@@ -12,7 +12,7 @@ public sealed class InitialAdminSetupTests(PostgreSqlFixture fixture)
     : IClassFixture<PostgreSqlFixture>
 {
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Integration")]
     public async Task RunAsync_WhenInitialAdminIsConfigured_MigratesAndGrantsAccessIdempotently()
     {
         using IHost host = CreateHost();
@@ -44,7 +44,7 @@ public sealed class InitialAdminSetupTests(PostgreSqlFixture fixture)
     }
 
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Integration")]
     public async Task RunAsync_WhenInitialAdminWasRevoked_ReturnsFailureUntilForced()
     {
         using IHost host = CreateHost();

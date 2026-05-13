@@ -17,6 +17,21 @@ Expected categories:
 - `Integration`
 - `Eval`
 
+Use `Unit` for isolated domain, application, helper, and component behavior
+that can be covered without host composition or external IO. Simple
+collaborator interactions should use substitutes.
+
+Use `Application` only when the application or host harness is the useful thing
+under test, such as dependency injection wiring, middleware behavior,
+authentication/authorization configuration, endpoint composition, or a
+stateful in-memory fake that gives fast PR feedback for behavior that would be
+awkward to cover with pure unit tests. Application tests must not depend on
+real external IO.
+
+Use `Integration` for behavior that verifies persistence, network, or other
+external infrastructure boundaries. Integration tests should use real IO
+through Testcontainers rather than an in-memory persistence stack.
+
 Backend test method names should use PascalCase scenario segments separated by
 underscores:
 
@@ -27,9 +42,6 @@ public async Task Endpoint_WhenCondition_ReturnsExpectedResult()
 Use the first segment for the behavior or API under test, the middle segment
 for the relevant condition, and the final segment for the observable outcome.
 Prefer this shape for new tests instead of sentence-style names.
-
-Integration tests should use real IO through Testcontainers rather than an
-in-memory persistence stack.
 
 On Linux, Testcontainers integration fixtures default to the standard rootless
 Podman socket at `${XDG_RUNTIME_DIR}/podman/podman.sock`, or

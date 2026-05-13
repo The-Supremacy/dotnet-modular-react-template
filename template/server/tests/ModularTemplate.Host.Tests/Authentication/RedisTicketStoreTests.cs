@@ -11,7 +11,7 @@ namespace ModularTemplate.Host.Tests.Authentication;
 public sealed class RedisTicketStoreTests
 {
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public async Task TicketStore_WhenTicketIsStored_RoundTripsAndRemovesAuthenticationTicket()
     {
         using ServiceProvider services = new ServiceCollection()

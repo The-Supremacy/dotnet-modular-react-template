@@ -18,7 +18,7 @@ namespace ModularTemplate.Host.Tests.Authentication;
 public sealed class AuthEndpointTests
 {
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public void ResolveLoginRedirectUri_WhenReturnUrlIsRootRelative_ReturnsReturnUrl()
     {
         var context = new DefaultHttpContext();
@@ -33,7 +33,7 @@ public sealed class AuthEndpointTests
     }
 
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public void ResolveLoginRedirectUri_WhenReturnUrlMatchesRequestOrigin_ReturnsAbsoluteReturnUrl()
     {
         var context = new DefaultHttpContext();
@@ -48,7 +48,7 @@ public sealed class AuthEndpointTests
     }
 
     [Fact]
-    [Trait("Category", "Application")]
+    [Trait("Category", "Unit")]
     public void ResolveLoginRedirectUri_WhenReturnUrlIsExternal_ReturnsRoot()
     {
         var context = new DefaultHttpContext();

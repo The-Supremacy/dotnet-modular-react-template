@@ -122,5 +122,7 @@ ceremony than clarity.
 
 Tests should use substitutes for simple collaborator interactions. In-memory
 fakes are reserved for stateful behavior that is central to the test and should
-remain test-only. Integration tests that verify persistence behavior should use
-real external IO through the documented Testcontainers pattern.
+remain test-only. Application tests should cover host or application harness
+behavior that cannot be usefully covered by pure unit tests and must stay free
+of real external IO. Integration tests that verify persistence behavior should
+use real external IO through the documented Testcontainers pattern.
